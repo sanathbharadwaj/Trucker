@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Trucker</string>
+    <string name="title_activity_maps">Trucker</string>
+    <string name="title_activity_booking">BookingActivity</string>
+</resources>
