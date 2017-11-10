@@ -82,6 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     moveCamera(location);
                     recentered = true;
                     //This is great
+                    //This is from here
                 }
             }
 
