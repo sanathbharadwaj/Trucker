@@ -81,6 +81,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (!recentered) {
                     moveCamera(location);
                     recentered = true;
+                    //This is great
                 }
             }
 

@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Trucker.iml" filepath="$PROJECT_DIR$/Trucker.iml" />
+      <module fileurl="file://C:\Users\LENOVO\Trucker\Trucker.iml" filepath="C:\Users\LENOVO\Trucker\Trucker.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\LENOVO\Trucker\app\app.iml" filepath="C:\Users\LENOVO\Trucker\app\app.iml" />
     </modules>
   </component>
 </project>
