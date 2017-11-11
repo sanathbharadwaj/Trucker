@@ -1,25 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="trucker.harsha.com.trucker.BookingActivity"
-    tools:showIn="@layout/activity_booking">
+    android:background="#D3D3D3">
 
 
-    <TextView
-        android:id="@+id/textView"
+    <Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="129dp"
+        android:layout_marginBottom="8dp"
+        android:background="#0000ff"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="1.0"
+        map:layout_constraintLeft_toLeftOf="parent"
+        map:layout_constraintRight_toRightOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent"
+        map:layout_constraintVertical_bias="0.0">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="113dp"
+            map:layout_constraintLeft_toLeftOf="parent"
+            map:layout_constraintRight_toRightOf="parent"
+            tools:layout_editor_absoluteY="8dp">
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape"
+                android:inputType="none"
+                android:text="Your pickup location"
+                map:layout_constraintEnd_toEndOf="parent"
+                map:layout_constraintHorizontal_bias="0.0"
+                map:layout_constraintLeft_toLeftOf="parent"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toTopOf="parent">
+
+            </EditText>
+
+            <EditText
+                android:id="@+id/editText_des"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:layout_below="@+id/editText"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/shape"
+                android:hint="Enter destination "
+                map:layout_constraintEnd_toEndOf="parent"
+                map:layout_constraintHorizontal_bias="0.0"
+                map:layout_constraintLeft_toLeftOf="parent"
+                map:layout_constraintStart_toStartOf="parent"
+                map:layout_constraintTop_toTopOf="parent">
+
+            </EditText>
+        </RelativeLayout>
+    </Toolbar>
+
+    <ImageView
+        android:id="@+id/goods_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="150dp"
-        android:layout_marginRight="150dp"
-        android:text="Sanath"
-        android:textSize="30sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="146dp" />
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:elevation="4dp"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintRight_toRightOf="parent"
+        map:layout_constraintTop_toTopOf="@+id/goods_types"
+        map:srcCompat="@drawable/ic_keyboard_arrow_down" />
 
-</RelativeLayout>
+    <Spinner
+        android:id="@+id/goods_types"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:background="#fffff0"
+        android:entries="@array/goods_list_array"
+        android:padding="10dp"
+        android:text="SELECT GOODS TYPE"
+        android:textAlignment="viewStart"
+        android:textColor="#0000ff"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintLeft_toLeftOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+
+    <ImageView
+        android:id="@+id/vehicles_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:elevation="4dp"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintTop_toTopOf="@+id/vehicle_types"
+        map:srcCompat="@drawable/ic_keyboard_arrow_down" />
+
+
+    <Spinner
+        android:id="@+id/vehicle_types"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="#fffff0"
+        android:entries="@array/vehicles_list_array"
+        android:padding="10dp"
+        android:text="SELECT VEHICLE TYPE"
+        android:textAlignment="viewStart"
+        android:textColor="#0000ff"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintRight_toRightOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/goods_types" />
+
+    <ImageView
+        android:id="@+id/pay_bg"
+        android:layout_width="0dp"
+        android:layout_height="145dp"
+        android:layout_marginTop="28dp"
+        map:layout_constraintEnd_toEndOf="@+id/vehicle_types"
+        map:layout_constraintHorizontal_bias="1.0"
+        map:layout_constraintLeft_toLeftOf="parent"
+        map:layout_constraintRight_toRightOf="parent"
+        map:layout_constraintStart_toStartOf="@+id/vehicle_types"
+        map:layout_constraintTop_toBottomOf="@+id/vehicle_types"
+        map:srcCompat="@color/common_google_signin_btn_text_dark_default" />
+
+    <TextView
+        android:id="@+id/pay_head"
+        android:layout_width="0dp"
+        android:layout_height="31dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="PAYMENT MODE"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        map:layout_constraintEnd_toEndOf="@+id/vehicle_types"
+        map:layout_constraintLeft_toLeftOf="parent"
+        map:layout_constraintRight_toRightOf="parent"
+        map:layout_constraintStart_toStartOf="@+id/vehicle_types"
+        map:layout_constraintTop_toBottomOf="@+id/vehicle_types" />
+
+    <TextView
+        android:id="@+id/cash_pay"
+        android:layout_width="107dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Cash"
+        android:textAlignment="textEnd"
+        android:paddingLeft="20dp"
+        android:textAllCaps="false"
+        android:textColor="#800000"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        map:layout_constraintEnd_toStartOf="@+id/guideline4"
+        map:layout_constraintHorizontal_bias="0.507"
+        map:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="320dp" />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        android:orientation="vertical"/>
+
+    <TextView
+        android:id="@+id/paytm_pay"
+        android:layout_width="107dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="35dp"
+        android:paddingRigh
+        android:text="Paytm"
+        android:textAlignment="textEnd"
+        android:textAllCaps="false"
+        android:textColor="#800000"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toEndOf="@+id/guideline4"
+        tools:layout_editor_absoluteY="320dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        map:layout_constraintGuide_percent="0.5" />
+
+    <RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        map:layout_constraintEnd_toStartOf="@+id/guideline4"
+        map:layout_constraintHorizontal_bias="0.463"
+        map:layout_constraintStart_toStartOf="@+id/pay_bg"
+        tools:layout_editor_absoluteY="320dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        map:layout_constraintEnd_toEndOf="@+id/pay_bg"
+        map:layout_constraintStart_toStartOf="@+id/guideline4"
+        tools:layout_editor_absoluteY="320dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="135dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="68dp"
+        android:text="Credit/Debit"
+        android:textAlignment="textEnd"
+        android:textColor="#800000"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        map:layout_constraintEnd_toEndOf="@+id/pay_bg"
+        map:layout_constraintHorizontal_bias="0.502"
+        map:layout_constraintLeft_toLeftOf="parent"
+        map:layout_constraintRight_toRightOf="parent"
+        map:layout_constraintStart_toStartOf="@+id/pay_bg"
+        map:layout_constraintTop_toBottomOf="@+id/pay_head" />
+
+    <RadioButton
+        android:id="@+id/radioButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        map:layout_constraintBottom_toBottomOf="@+id/pay_bg"
+        map:layout_constraintEnd_toStartOf="@+id/guideline4"
+        map:layout_constraintHorizontal_bias="0.861"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toBottomOf="@+id/pay_head"
+        map:layout_constraintVertical_bias="0.967" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:background="#0000ff"
+        android:text="CONFIRM ORDER"
+        android:textColor="#ffffff"
+        map:layout_constraintEnd_toEndOf="@+id/pay_bg"
+        map:layout_constraintLeft_toLeftOf="parent"
+        map:layout_constraintRight_toRightOf="parent"
+        map:layout_constraintStart_toStartOf="@+id/pay_bg"
+        map:layout_constraintTop_toBottomOf="@+id/pay_bg" />
+
+
+</android.support.constraint.ConstraintLayout>

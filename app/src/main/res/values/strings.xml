@@ -2,4 +2,18 @@
     <string name="app_name">Trucker</string>
     <string name="title_activity_maps">Trucker</string>
     <string name="title_activity_booking">BookingActivity</string>
+    <string-array name="goods_list_array">
+        <item>Electrical/Electronics</item>
+        <item>Furniture</item>
+        <item>Timber/Plywood</item>
+        <item>Textile/Garments</item>
+        <item>Pharmacy/Medical Supplies</item>
+        <item>Food items</item>
+        <item>Chemicals/Paints</item>
+        <item>Plastic/Rubber</item>
+    </string-array>
+    <string-array name="vehicles_list_array">
+        <item>Tata Ace</item>
+        <item>Tata 407</item>
+    </string-array>
 </resources>
