@@ -16,7 +16,7 @@
         tools:context="trucker.harsha.com.trucker.MapsActivity" />
 
     <TextView
-        android:id="@+id/address_bar"
+        android:id="@+id/address_bar_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/map"
@@ -30,7 +30,7 @@
         android:onClick="bookNow"
         android:text="Book Now"
         android:layout_marginTop="34dp"
-        android:layout_below="@+id/address_bar"
+        android:layout_below="@+id/address_bar_textview"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="9dp"

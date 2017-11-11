@@ -3,7 +3,6 @@ package trucker.harsha.com.trucker;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -18,6 +17,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,9 +25,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.Parse;
-import com.parse.ParseObject;
-import com.parse.ParseUser;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,9 +35,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
-    Location currentLocation;
+    Location currentLocation, pickUpLocation;
     String selectedAddress;
     public Location lastLocation;
+    GoogleMap.OnCameraIdleListener onCameraIdleListener;
+    TextView addressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        //myUpdate
+
+        addressBar = (TextView)findViewById(R.id.address_bar_textview);
 
     }
 
@@ -67,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        configureCameraIdle();
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -81,8 +81,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (!recentered) {
                     moveCamera(location);
                     recentered = true;
-                    //This is great
-                    //This is from here
+                    pickUpLocation = new Location(location);
                 }
             }
 
@@ -98,6 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onProviderDisabled(String s) {
+                showToast("Please enable GPS");
 
             }
         };
@@ -136,12 +136,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     void updateLocation(Location location) {
-        TextView addressBar = (TextView)findViewById(R.id.address_bar);
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,17));
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(userLocation));
 
+        setEditText(location);
+    }
+
+    void setEditText(Location location)
+    {
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
         try {
             List<Address> listAddress = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -161,7 +165,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     void moveCamera(Location location)
     {
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,17));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation,17));
     }
 
     @Override
@@ -202,8 +206,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void bookNow(View view){
         Intent intent = new Intent(this, BookingActivity.class);
-        intent.putExtra("Latitude", currentLocation.getLatitude());
-        intent.putExtra("Longitude", currentLocation.getLongitude());
+        intent.putExtra("Latitude", pickUpLocation.getLatitude());
+        intent.putExtra("Longitude", pickUpLocation.getLongitude());
         intent.putExtra("Address", selectedAddress);
         startActivity(intent);
     }
@@ -212,6 +216,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         if(lastLocation != null)
             moveCamera(lastLocation);
+    }
+
+    void configureCameraIdle()
+    {
+        onCameraIdleListener = new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                LatLng latLng=mMap.getCameraPosition().target;
+                Location location = new Location("dummy");
+                location.setLatitude(latLng.latitude);
+                location.setLongitude(latLng.longitude);
+                pickUpLocation = new Location(location);
+                setEditText(location);
+                showToast("Camera now idle");
+            }
+        } ;
+    }
+
+    void showToast(String message)
+    {
+        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
     }
 
 
