@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    public void onSearch(View view){
+        EditText location_tf = (EditText)findViewById(R.id.editText);
+        String location = location_tf.getText().toString();
+        List<Address> addressList = null;
+
+        if(!location.equals(""))
+        {
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                addressList = geocoder.getFromLocationName(location,1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Address address = addressList.get(0);
+            LatLng latlng = new LatLng(address.getLatitude(),address.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latlng).title("Marker"));
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(latlng));
+        }
+
+
+    }
 
     /**
      * Manipulates the map once available.
