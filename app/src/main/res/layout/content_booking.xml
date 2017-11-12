@@ -32,7 +32,7 @@
             tools:layout_editor_absoluteY="8dp">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/pick_up_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:layout_marginEnd="8dp"
@@ -40,6 +40,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/shape"
                 android:inputType="none"
+                android:singleLine="true"
                 android:text="Your pickup location"
                 map:layout_constraintEnd_toEndOf="parent"
                 map:layout_constraintHorizontal_bias="0.0"
@@ -50,15 +51,17 @@
             </EditText>
 
             <EditText
-                android:id="@+id/editText_des"
+                android:id="@+id/destination_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
-                android:layout_below="@+id/editText"
+                android:layout_below="@+id/pick_up_edittext"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="18dp"
                 android:background="@drawable/shape"
                 android:hint="Enter destination "
+                android:onClick="placeSearch"
+                android:singleLine="true"
                 map:layout_constraintEnd_toEndOf="parent"
                 map:layout_constraintHorizontal_bias="0.0"
                 map:layout_constraintLeft_toLeftOf="parent"
@@ -79,11 +82,11 @@
         android:elevation="4dp"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintRight_toRightOf="parent"
-        map:layout_constraintTop_toTopOf="@+id/goods_types"
+        map:layout_constraintTop_toTopOf="@+id/good_type"
         map:srcCompat="@drawable/ic_keyboard_arrow_down" />
 
     <Spinner
-        android:id="@+id/goods_types"
+        android:id="@+id/good_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -110,12 +113,12 @@
         android:layout_marginTop="8dp"
         android:elevation="4dp"
         map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintTop_toTopOf="@+id/vehicle_types"
+        map:layout_constraintTop_toTopOf="@+id/vehicle_type"
         map:srcCompat="@drawable/ic_keyboard_arrow_down" />
 
 
     <Spinner
-        android:id="@+id/vehicle_types"
+        android:id="@+id/vehicle_type"
         android:layout_width="0dp"
         android:layout_height="38dp"
         android:layout_marginEnd="8dp"
@@ -131,19 +134,19 @@
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintRight_toRightOf="parent"
         map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toBottomOf="@+id/goods_types" />
+        map:layout_constraintTop_toBottomOf="@+id/good_type" />
 
     <ImageView
         android:id="@+id/pay_bg"
         android:layout_width="0dp"
         android:layout_height="145dp"
         android:layout_marginTop="28dp"
-        map:layout_constraintEnd_toEndOf="@+id/vehicle_types"
+        map:layout_constraintEnd_toEndOf="@+id/vehicle_type"
         map:layout_constraintHorizontal_bias="1.0"
         map:layout_constraintLeft_toLeftOf="parent"
         map:layout_constraintRight_toRightOf="parent"
-        map:layout_constraintStart_toStartOf="@+id/vehicle_types"
-        map:layout_constraintTop_toBottomOf="@+id/vehicle_types"
+        map:layout_constraintStart_toStartOf="@+id/vehicle_type"
+        map:layout_constraintTop_toBottomOf="@+id/vehicle_type"
         map:srcCompat="@color/common_google_signin_btn_text_dark_default" />
 
     <TextView
@@ -159,11 +162,11 @@
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold|italic"
-        map:layout_constraintEnd_toEndOf="@+id/vehicle_types"
+        map:layout_constraintEnd_toEndOf="@+id/vehicle_type"
         map:layout_constraintLeft_toLeftOf="parent"
         map:layout_constraintRight_toRightOf="parent"
-        map:layout_constraintStart_toStartOf="@+id/vehicle_types"
-        map:layout_constraintTop_toBottomOf="@+id/vehicle_types" />
+        map:layout_constraintStart_toStartOf="@+id/vehicle_type"
+        map:layout_constraintTop_toBottomOf="@+id/vehicle_type" />
 
     <TextView
         android:id="@+id/cash_pay"
@@ -171,9 +174,9 @@
         android:layout_height="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:paddingLeft="20dp"
         android:text="Cash"
         android:textAlignment="textEnd"
-        android:paddingLeft="20dp"
         android:textAllCaps="false"
         android:textColor="#800000"
         android:textSize="18sp"
@@ -182,11 +185,12 @@
         map:layout_constraintHorizontal_bias="0.507"
         map:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="320dp" />
+
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:background="#CCCCCC"
-        android:orientation="vertical"/>
+        android:orientation="vertical" />
 
     <TextView
         android:id="@+id/paytm_pay"
@@ -194,7 +198,6 @@
         android:layout_height="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="35dp"
-        android:paddingRigh
         android:text="Paytm"
         android:textAlignment="textEnd"
         android:textAllCaps="false"
@@ -211,27 +214,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         map:layout_constraintGuide_percent="0.5" />
-
-    <RadioButton
-        android:id="@+id/radioButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        map:layout_constraintEnd_toStartOf="@+id/guideline4"
-        map:layout_constraintHorizontal_bias="0.463"
-        map:layout_constraintStart_toStartOf="@+id/pay_bg"
-        tools:layout_editor_absoluteY="320dp" />
-
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        map:layout_constraintEnd_toEndOf="@+id/pay_bg"
-        map:layout_constraintStart_toStartOf="@+id/guideline4"
-        tools:layout_editor_absoluteY="320dp" />
 
     <TextView
         android:id="@+id/textView5"
@@ -250,21 +232,6 @@
         map:layout_constraintStart_toStartOf="@+id/pay_bg"
         map:layout_constraintTop_toBottomOf="@+id/pay_head" />
 
-    <RadioButton
-        android:id="@+id/radioButton3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        map:layout_constraintBottom_toBottomOf="@+id/pay_bg"
-        map:layout_constraintEnd_toStartOf="@+id/guideline4"
-        map:layout_constraintHorizontal_bias="0.861"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toBottomOf="@+id/pay_head"
-        map:layout_constraintVertical_bias="0.967" />
-
     <Button
         android:id="@+id/button2"
         android:layout_width="370dp"
@@ -273,6 +240,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:background="#0000ff"
+        android:onClick="onConfirmBooking"
         android:text="CONFIRM ORDER"
         android:textColor="#ffffff"
         map:layout_constraintBottom_toBottomOf="parent"
@@ -282,6 +250,57 @@
         map:layout_constraintRight_toRightOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <RadioGroup
+        android:id="@+id/radiogroup"
+        android:layout_width="0dp"
+        android:layout_height="93dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="0.0"
+        map:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="311dp">
+
+        <RadioButton
+            android:id="@+id/cash_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            map:layout_constraintEnd_toStartOf="@+id/guideline4"
+            map:layout_constraintHorizontal_bias="0.463"
+            map:layout_constraintStart_toStartOf="@+id/pay_bg"
+            tools:layout_editor_absoluteY="320dp" />
+
+        <RadioButton
+            android:id="@+id/paytm_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            map:layout_constraintEnd_toEndOf="@+id/pay_bg"
+            map:layout_constraintStart_toStartOf="@+id/guideline4"
+            tools:layout_editor_absoluteY="320dp" />
+
+        <RadioButton
+            android:id="@+id/cc_radiobutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            map:layout_constraintBottom_toBottomOf="@+id/pay_bg"
+            map:layout_constraintEnd_toStartOf="@+id/guideline4"
+            map:layout_constraintHorizontal_bias="0.861"
+            map:layout_constraintStart_toStartOf="parent"
+            map:layout_constraintTop_toBottomOf="@+id/pay_head"
+            map:layout_constraintVertical_bias="0.967" />
+    </RadioGroup>
 
 
 </android.support.constraint.ConstraintLayout>

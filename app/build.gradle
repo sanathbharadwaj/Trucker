@@ -5,7 +5,7 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "trucker.harsha.com.trucker"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -27,6 +27,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.google.android.gms:play-services-maps:11.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.github.gurleensethi:LiteUtilities:v1.3.0'
+    compile 'com.google.android.gms:play-services-places:11.0.1'
+    compile 'com.github.percolate:caffeine:0.4.7'
     compile 'com.android.support:design:26.+'
     testCompile 'junit:junit:4.12'
     compile 'com.parse:parse-android:1.15.8'

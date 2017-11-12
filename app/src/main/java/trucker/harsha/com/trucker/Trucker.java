@@ -22,21 +22,21 @@ public class Trucker extends Application {
         Parse.enableLocalDatastore(this);
 
         // Add your initialization code here
-     /*   Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                 .applicationId("7504ba215dd57dcd2585e9406d50832ed4dda57e")
                 .clientKey("1aea9245f094279bdd6bd46419fb565da1500a61")
                 .server("http://18.220.173.24:80/parse")
                 .build()
         );
 
-        */
 
-        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+
+      /*  Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                 .applicationId("myAppId")
                 .clientKey("myClient")
                 .server("http://192.168.23.121:1337/parse")
                 .build()
-        );
+        ); */
 
 
         ParseUser.enableAutomaticUser();

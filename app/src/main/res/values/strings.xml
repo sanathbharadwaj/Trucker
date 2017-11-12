@@ -3,6 +3,7 @@
     <string name="title_activity_maps">Trucker</string>
     <string name="title_activity_booking">BookingActivity</string>
     <string-array name="goods_list_array">
+        <item>Select Good Type</item>
         <item>Electrical/Electronics</item>
         <item>Furniture</item>
         <item>Timber/Plywood</item>
@@ -13,6 +14,7 @@
         <item>Plastic/Rubber</item>
     </string-array>
     <string-array name="vehicles_list_array">
+        <item>Select Vehicle Type</item>
         <item>Tata Ace</item>
         <item>Tata 407</item>
     </string-array>

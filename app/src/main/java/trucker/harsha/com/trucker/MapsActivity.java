@@ -15,11 +15,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,7 +46,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String selectedAddress;
     public Location lastLocation;
     GoogleMap.OnCameraIdleListener onCameraIdleListener;
-    TextView addressBar;
+    EditText addressBar;
+    boolean recentered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,25 +58,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        addressBar = (TextView)findViewById(R.id.address_bar_textview);
+        addressBar = (EditText) findViewById(R.id.pick_up_edittext);
 
     }
 
-    public void onSearch(View view){
-        EditText location_tf = (EditText)findViewById(R.id.editText);
-        String location = location_tf.getText().toString();
+    public void search(String locationText) {
+        //EditText location_tf = (EditText) findViewById(R.id.pick_up_edittext);
+        //String locationText = location_tf.getText().toString();
+        //selectedAddress = locationText;
         List<Address> addressList = null;
 
-        if(!location.equals(""))
-        {
+        if (!locationText.equals("")) {
             Geocoder geocoder = new Geocoder(this);
             try {
-                addressList = geocoder.getFromLocationName(location,1);
+                addressList = geocoder.getFromLocationName(locationText, 1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             Address address = addressList.get(0);
-            LatLng latlng = new LatLng(address.getLatitude(),address.getLongitude());
+            LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
+            mMap.clear();
             mMap.addMarker(new MarkerOptions().position(latlng).title("Marker"));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latlng));
         }
@@ -93,7 +101,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
-            boolean recentered = false;
+
 
             @Override
             public void onLocationChanged(Location location) {
@@ -134,25 +142,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 5, locationListener);
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(lastKnownLocation!=null)
-            updateLocation(lastKnownLocation);
-        }
-
-        else {
+            startLocation();
+        } else {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             } else {
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if(lastKnownLocation!=null)
-                updateLocation(lastKnownLocation);
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 5, locationListener);
+                startLocation();
             }
         }
 
         // Add a marker in Sydney and move the camera
-       // LatLng sydney = new LatLng(-34, 151);
+        // LatLng sydney = new LatLng(-34, 151);
         //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
@@ -162,32 +162,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,17));
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(userLocation));
-
-        setEditText(location);
     }
 
-    void setEditText(Location location)
-    {
+    void startLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 5, locationListener);
+        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        pickUpLocation = lastKnownLocation;
+        if (lastKnownLocation != null)
+            moveCamera(lastKnownLocation);
+        if (lastKnownLocation != null) {
+            updateLocation(lastKnownLocation);
+            setEditText(lastKnownLocation);
+        }
+    }
+
+    void setEditText(Location location) {
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
         try {
             List<Address> listAddress = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            if (listAddress!=null && listAddress.size()>0){
+            if (listAddress != null && listAddress.size() > 0) {
                 String address = refineAddress(listAddress.get(0));
                 selectedAddress = address;
                 addressBar.setText(address);
             }
 
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    void moveCamera(Location location)
-    {
+    void moveCamera(Location location) {
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation,17));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 17));
     }
 
     @Override
@@ -204,48 +220,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 5, locationListener);
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(lastKnownLocation!=null)
-            updateLocation(lastKnownLocation);
+            startLocation();
         }
     }
 
-    String refineAddress(Address address){
+
+    String refineAddress(Address address) {
         String result = "";
-        if(address.getAddressLine(0) != null) {
+        if (address.getAddressLine(0) != null) {
             result += address.getAddressLine(0) + ", ";
         }
-        if(address.getAddressLine(1) != null) {
+        if (address.getAddressLine(1) != null) {
             result += address.getAddressLine(1) + ", ";
         }
-        if(address.getAddressLine(2) != null) {
-            result += address.getAddressLine(2);
+        if (address.getAddressLine(2) != null) {
+            // result += address.getAddressLine(2);
         }
 
         return result;
     }
 
-    public void bookNow(View view){
-        Intent intent = new Intent(this, BookingActivity.class);
-        intent.putExtra("Latitude", pickUpLocation.getLatitude());
-        intent.putExtra("Longitude", pickUpLocation.getLongitude());
-        intent.putExtra("Address", selectedAddress);
-        startActivity(intent);
+    public void bookNow(View view) {
+        try {
+            Intent intent = new Intent(this, BookingActivity.class);
+            intent.putExtra("latitude", pickUpLocation.getLatitude());
+            intent.putExtra("longitude", pickUpLocation.getLongitude());
+            intent.putExtra("address", selectedAddress);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void gpsRecenter(View view)
-    {
-        if(lastLocation != null)
+    public void gpsRecenter(View view) {
+        if (lastLocation != null) {
             moveCamera(lastLocation);
+            setEditText(lastLocation);
+        }
     }
 
-    void configureCameraIdle()
-    {
+    void configureCameraIdle() {
         onCameraIdleListener = new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
-                LatLng latLng=mMap.getCameraPosition().target;
+                LatLng latLng = mMap.getCameraPosition().target;
                 Location location = new Location("dummy");
                 location.setLatitude(latLng.latitude);
                 location.setLongitude(latLng.longitude);
@@ -253,14 +271,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 setEditText(location);
                 showToast("Camera now idle");
             }
-        } ;
+        };
     }
 
-    void showToast(String message)
-    {
-        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+    void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    int place_autocomplete_request_code = 1;
 
+    public void placeSearch(View view) {
+        place_autocomplete_request_code = 1;
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                            .build(this);
+            startActivityForResult(intent, place_autocomplete_request_code);
+        } catch (GooglePlayServicesRepairableException e) {
+            showToast("Error loading places!");
+        } catch (GooglePlayServicesNotAvailablexception e) {
+            showToast("Error loading places!");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == place_autocomplete_request_code) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                String address = place.getName().toString();//Check for place address
+                addressBar.setText(address);
+                selectedAddress = address;
+                search(address);
+                Log.i("Place", "Place: " + place.getName());
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                showToast("Error retrieving place");
+                // TODO: Handle the error.
+                Log.i("Place", status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+
+
+    }
 }
 

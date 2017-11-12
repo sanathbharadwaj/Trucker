@@ -19,7 +19,7 @@
         tools:context="trucker.harsha.com.trucker.MapsActivity" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/pick_up_edittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -28,6 +28,8 @@
         android:layout_marginTop="42dp"
         android:background="@drawable/shape"
         android:hint="Enter a Pickup Point "
+        android:onClick="placeSearch"
+        android:singleLine="true"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintLeft_toLeftOf="parent"
         map:layout_constraintStart_toStartOf="parent"
@@ -80,8 +82,8 @@
 
     <ImageButton
         android:id="@+id/recenter_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="44dp"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
@@ -103,9 +105,8 @@
         android:background="#ffffff"
         android:maxHeight="25dp"
         android:maxWidth="25dp"
-        android:onClick="onSearch"
         android:src="@drawable/ic_search_black"
-        map:layout_constraintEnd_toEndOf="@+id/editText"
+        map:layout_constraintEnd_toEndOf="@+id/pick_up_edittext"
         map:layout_constraintHorizontal_bias="1.0"
         map:layout_constraintRight_toRightOf="parent"
         map:layout_constraintStart_toStartOf="parent"
