@@ -75,6 +75,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            if(addressList.size() == 0)
+            {
+                showToast("Please restart your phone");
+                return;
+            }
             Address address = addressList.get(0);
             LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
             mMap.clear();
@@ -287,9 +292,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
                             .build(this);
             startActivityForResult(intent, place_autocomplete_request_code);
-        } catch (GooglePlayServicesRepairableException e) {
-            showToast("Error loading places!");
-        } catch (GooglePlayServicesNotAvailablexception e) {
+        } catch (Exception e) {
             showToast("Error loading places!");
         }
     }

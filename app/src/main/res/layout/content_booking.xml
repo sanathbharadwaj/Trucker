@@ -3,7 +3,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout2"
+    android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#D3D3D3">
@@ -170,10 +170,10 @@
 
     <TextView
         android:id="@+id/cash_pay"
-        android:layout_width="107dp"
+        android:layout_width="85dp"
         android:layout_height="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:paddingLeft="20dp"
         android:text="Cash"
         android:textAlignment="textEnd"
@@ -181,10 +181,8 @@
         android:textColor="#800000"
         android:textSize="18sp"
         android:textStyle="bold|italic"
-        map:layout_constraintEnd_toStartOf="@+id/guideline4"
-        map:layout_constraintHorizontal_bias="0.507"
         map:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="320dp" />
+        map:layout_constraintTop_toTopOf="@+id/pay_bg" />
 
     <View
         android:layout_width="wrap_content"
@@ -194,19 +192,18 @@
 
     <TextView
         android:id="@+id/paytm_pay"
-        android:layout_width="107dp"
+        android:layout_width="98dp"
         android:layout_height="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
         android:text="Paytm"
         android:textAlignment="textEnd"
         android:textAllCaps="false"
         android:textColor="#800000"
         android:textSize="18sp"
         android:textStyle="bold|italic"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintStart_toEndOf="@+id/guideline4"
-        tools:layout_editor_absoluteY="320dp" />
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="@+id/pay_head" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline4"
@@ -217,57 +214,53 @@
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="135dp"
+        android:layout_width="132dp"
         android:layout_height="33dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="24dp"
         android:text="Credit/Debit"
         android:textAlignment="textEnd"
         android:textColor="#800000"
         android:textSize="18sp"
         android:textStyle="bold|italic"
-        map:layout_constraintEnd_toEndOf="@+id/pay_bg"
-        map:layout_constraintHorizontal_bias="0.502"
-        map:layout_constraintLeft_toLeftOf="parent"
-        map:layout_constraintRight_toRightOf="parent"
-        map:layout_constraintStart_toStartOf="@+id/pay_bg"
-        map:layout_constraintTop_toBottomOf="@+id/pay_head" />
+        map:layout_constraintBottom_toBottomOf="@+id/pay_bg"
+        map:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
         android:background="#0000ff"
         android:onClick="onConfirmBooking"
         android:text="CONFIRM ORDER"
         android:textColor="#ffffff"
         map:layout_constraintBottom_toBottomOf="parent"
-        map:layout_constraintEnd_toEndOf="@+id/pay_bg"
-        map:layout_constraintLeft_toLeftOf="parent"
-        map:layout_constraintRight_toRightOf="parent"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toBottomOf="@+id/textView5" />
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent" />
 
     <RadioGroup
         android:id="@+id/radiogroup"
         android:layout_width="0dp"
         android:layout_height="93dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:orientation="vertical"
+        map:layout_constraintBottom_toBottomOf="@+id/pay_bg"
         map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintHorizontal_bias="0.0"
-        map:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="311dp">
+        map:layout_constraintStart_toStartOf="parent">
 
         <RadioButton
             android:id="@+id/cash_radiobutton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
+            android:paddingBottom="10dp"
             map:layout_constraintEnd_toStartOf="@+id/guideline4"
             map:layout_constraintHorizontal_bias="0.463"
             map:layout_constraintStart_toStartOf="@+id/pay_bg"
@@ -275,18 +268,20 @@
 
         <RadioButton
             android:id="@+id/paytm_radiobutton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
+            android:paddingBottom="15dp"
             map:layout_constraintEnd_toEndOf="@+id/pay_bg"
             map:layout_constraintStart_toStartOf="@+id/guideline4"
             tools:layout_editor_absoluteY="320dp" />
 
         <RadioButton
             android:id="@+id/cc_radiobutton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
