@@ -104,6 +104,8 @@ public class BookingActivity extends AppCompatActivity {
                 if(e==null)
                 {
                     showToast("Booking accepted");
+                    Intent inte = new Intent(BookingActivity.this, trackTrip.class);
+                    startActivity(inte);
                     finish();
                 }
                 else

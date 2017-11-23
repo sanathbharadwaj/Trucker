@@ -13,11 +13,12 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="478dp"
-        android:layout_marginBottom="8dp"
         map:layout_constraintBottom_toTopOf="@+id/textView2"
         map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintHorizontal_bias="0.0"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent"
+        map:layout_constraintVertical_bias="0.0"
         tools:context="trucker.harsha.com.trucker.MapsActivity" />
 
     <TextView
@@ -78,43 +79,43 @@
         android:layout_height="57dp"
         android:layout_marginBottom="64dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="80dp"
         android:src="@drawable/suhas_img"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toStartOf="@+id/ride_vehicle"
-        map:layout_constraintHorizontal_bias="0.515"
         map:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/driver_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:text="TextView"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="Suhas"
         android:textColor="#000000"
-        map:layout_constraintBottom_toTopOf="@+id/ride_vehicle"
-        map:layout_constraintStart_toStartOf="@+id/ride_vehicle"
-        map:layout_constraintTop_toTopOf="@+id/driver_img"
-        tools:text="Suhas" />
+        map:layout_constraintStart_toEndOf="@+id/driver_img"
+        map:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/ride_vehicle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="56dp"
+        android:text="Tata Ace"
         android:textColor="#000000"
-        map:layout_constraintBottom_toTopOf="@+id/vehicle_num"
-        tools:layout_editor_absoluteX="118dp"
-        tools:text="Tata Ace" />
+        map:layout_constraintStart_toEndOf="@+id/driver_img"
+        map:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/vehicle_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        map:layout_constraintBottom_toBottomOf="@+id/driver_img"
-        map:layout_constraintStart_toStartOf="@+id/ride_vehicle"
-        tools:text="KA 12 F0801" />
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="KA 12 F0801"
+        map:layout_constraintStart_toEndOf="@+id/driver_img"
+        map:layout_constraintTop_toBottomOf="@+id/driver_name" />
 
 
 </android.support.constraint.ConstraintLayout>
