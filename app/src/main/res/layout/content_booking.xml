@@ -42,6 +42,7 @@
                 android:inputType="none"
                 android:singleLine="true"
                 android:text="Your pickup location"
+                android:editable="false"
                 map:layout_constraintEnd_toEndOf="parent"
                 map:layout_constraintHorizontal_bias="0.0"
                 map:layout_constraintLeft_toLeftOf="parent"

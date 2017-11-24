@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/user_profile"
+        android:title="My Profile" />
+    <item android:id="@+id/user_trips"
+        android:title="Current trips"/>
+    <item android:id="@+id/user_past_trip"
+        android:title="Past trips"/>
+    <item android:id="@+id/user_rates"
+        android:title="Our Rates"/>
+    <item android:id="@+id/user_pay_options"
+        android:title="Payment Options"/>
+    <item android:id="@+id/user_about_us"
+        android:title="About Us"/>
+    <item android:id="@+id/user_contact_us"
+        android:title="Contact Us"/>
+    <item android:id="@+id/user_support"
+        android:title="Support"/>
+
+</menu>

@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -68,6 +69,18 @@ public class trackTrip extends AppCompatActivity implements OnMapReadyCallback {
                 startActivity(intent);
             }
         });
+        Button buttn = (Button) findViewById(R.id.ride_cancel);
+        buttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intn = new Intent(trackTrip.this, MapsActivity.class);
+                startActivity(intn);
+                showToast("Booking Canceled");
+                finish();
+            }
+        });
+
     }
 
     @Override
