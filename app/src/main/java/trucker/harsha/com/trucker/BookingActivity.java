@@ -96,7 +96,7 @@ public class BookingActivity extends AppCompatActivity {
         request.put("paymentMode", paymentMode);
         request.put("amount", 0);
         request.put("destination", destination);
-        request.put("source",source);
+        request.put("source", source);
 
         //TODO: Catch all types of exceptions
         request.saveInBackground(new SaveCallback() {
@@ -105,8 +105,8 @@ public class BookingActivity extends AppCompatActivity {
                 if(e==null)
                 {
                     showToast("Booking accepted");
-                    Intent inte = new Intent(BookingActivity.this, trackTrip.class);
-                    startActivity(inte);
+                    Intent intent = new Intent(BookingActivity.this, TrackTripActivity.class);
+                    startActivity(intent);
                     finish();
                 }
                 else

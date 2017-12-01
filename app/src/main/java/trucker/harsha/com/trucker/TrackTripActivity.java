@@ -21,24 +21,13 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
-
-public class trackTrip extends AppCompatActivity implements OnMapReadyCallback {
+public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     LocationManager locationManager;
@@ -69,13 +58,13 @@ public class trackTrip extends AppCompatActivity implements OnMapReadyCallback {
                 startActivity(intent);
             }
         });
-        Button buttn = (Button) findViewById(R.id.ride_cancel);
-        buttn.setOnClickListener(new View.OnClickListener() {
+        Button button = (Button) findViewById(R.id.ride_cancel);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intn = new Intent(trackTrip.this, MapsActivity.class);
-                startActivity(intn);
+                Intent intent = new Intent(TrackTripActivity.this, MapsActivity.class);
+                startActivity(intent);
                 showToast("Booking Canceled");
                 finish();
             }

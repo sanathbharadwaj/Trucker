@@ -31,14 +31,6 @@ public class Trucker extends Application {
 
 
 
-      /*  Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                .applicationId("myAppId")
-                .clientKey("myClient")
-                .server("http://192.168.23.121:1337/parse")
-                .build()
-        ); */
-
-
         ParseUser.enableAutomaticUser();
 
         ParseACL defaultACL = new ParseACL();

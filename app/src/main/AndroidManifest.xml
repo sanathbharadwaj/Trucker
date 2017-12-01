@@ -46,7 +46,7 @@
             android:name=".BookingActivity"
             android:label="@string/title_activity_booking"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".trackTrip"></activity>
+        <activity android:name=".TrackTripActivity"></activity>
     </application>
 
 </manifest>
