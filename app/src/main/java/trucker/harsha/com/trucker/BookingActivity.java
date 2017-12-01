@@ -96,6 +96,7 @@ public class BookingActivity extends AppCompatActivity {
         request.put("paymentMode", paymentMode);
         request.put("amount", 0);
         request.put("destination", destination);
+        request.put("source",source);
 
         //TODO: Catch all types of exceptions
         request.saveInBackground(new SaveCallback() {

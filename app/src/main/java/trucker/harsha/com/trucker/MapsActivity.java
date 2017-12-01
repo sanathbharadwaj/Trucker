@@ -42,8 +42,6 @@ import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mToggle;
     private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -64,24 +62,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         addressBar = (EditText) findViewById(R.id.pick_up_edittext);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout, R.string.open,R.string.close);
 
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(mToggle.onOptionsItemSelected(item)){
-            return true;
         }
-        return super.onOptionsItemSelected(item);
-    }
 
     public void search(String locationText) {
         //EditText location_tf = (EditText) findViewById(R.id.pick_up_edittext);
@@ -103,6 +86,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             Address address = addressList.get(0);
             LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
+            pickUpLocation.setLatitude(latlng.latitude);
+            pickUpLocation.setLongitude(latlng.longitude);
             mMap.clear();
             mMap.addMarker(new MarkerOptions().position(latlng).title("Marker"));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latlng));
