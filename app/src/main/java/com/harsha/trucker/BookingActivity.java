@@ -1,4 +1,4 @@
-package trucker.harsha.com.trucker;
+package com.harsha.trucker;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,11 +17,17 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
-import com.percolate.caffeine.ViewUtils;
+
+import com.harsha.trucker.R;
+
+import java.util.HashMap;
 
 public class BookingActivity extends AppCompatActivity {
     String username;
@@ -31,6 +37,7 @@ public class BookingActivity extends AppCompatActivity {
     private Spinner goodTypeSpinner;
     private Spinner vehicleTypeSpinner;
     private int place_autocomplete_request_code;
+    private ParseObject request;
 
     public enum PaymentMode
     {
@@ -53,7 +60,7 @@ public class BookingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_booking);
         //username = ParseUser.getCurrentUser().getUsername();
         username = "Sanath";
-        destinationET = ViewUtils.findViewById(this, R.id.destination_edit_text);
+        destinationET = findViewById(R.id.destination_edit_text);
         getDetails();
 
 
@@ -67,7 +74,7 @@ public class BookingActivity extends AppCompatActivity {
         double latitude = intent.getDoubleExtra("latitude",0);
         double longitude = intent.getDoubleExtra("longitude",0);
         pickUpLocation = new LatLng(latitude,longitude);
-        EditText sourceEt =  ViewUtils.findViewById(this,R.id.pick_up_edittext);
+        EditText sourceEt =  findViewById(R.id.pick_up_edittext);
         sourceEt.setText(source);
         sourceEt.setClickable(false);
 
@@ -76,18 +83,18 @@ public class BookingActivity extends AppCompatActivity {
     public void onConfirmBooking(View view)
     {
         destination = destinationET.getText().toString();
-        goodTypeSpinner = ViewUtils.findViewById(this, R.id.good_type);
+        goodTypeSpinner = findViewById(R.id.good_type);
         int goodType = goodTypeSpinner.getSelectedItemPosition() - 1;
-        vehicleTypeSpinner = ViewUtils.findViewById(this, R.id.vehicle_type);
+        vehicleTypeSpinner = findViewById(R.id.vehicle_type);
         int vehicleType = vehicleTypeSpinner.getSelectedItemPosition() - 1;
 
-        RadioGroup radioGroup = ViewUtils.findViewById(this, R.id.radiogroup);
+        RadioGroup radioGroup = findViewById(R.id.radiogroup);
         if(!areEntriesValid(goodType, vehicleType, radioGroup))
             return;
         int paymentMode = getPaymentMode(radioGroup.getCheckedRadioButtonId());
 
         ParseGeoPoint point = new ParseGeoPoint(pickUpLocation.latitude,pickUpLocation.longitude);
-        ParseObject request = new ParseObject("Request");
+        request = new ParseObject("Request");
         request.put("location", point);
         request.put("username", username);
         request.put("status", "accepted");
@@ -97,6 +104,7 @@ public class BookingActivity extends AppCompatActivity {
         request.put("amount", 0);
         request.put("destination", destination);
         request.put("source", source);
+        request.put("userInsId", ParseInstallation.getCurrentInstallation().getInstallationId());
 
         //TODO: Catch all types of exceptions
         request.saveInBackground(new SaveCallback() {
@@ -104,10 +112,7 @@ public class BookingActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if(e==null)
                 {
-                    showToast("Booking accepted");
-                    Intent intent = new Intent(BookingActivity.this, TrackTripActivity.class);
-                    startActivity(intent);
-                    finish();
+                    callCloud();
                 }
                 else
                 {
@@ -116,6 +121,24 @@ public class BookingActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    void callCloud()
+    {
+        HashMap<String, Integer> params = new HashMap<String, Integer>();
+        params.put("dummy", 1);
+        ParseCloud.callFunctionInBackground("newRequest", params, new FunctionCallback<Integer>() {
+
+           public void done(Integer res, ParseException e) {
+                    // ratings is 4.5
+                    showToast("Booking accepted");
+                    String id = request.getObjectId();
+                    Intent intent = new Intent(BookingActivity.this, TrackTripActivity.class);
+                    intent.putExtra("requestId", id);
+                    startActivity(intent);
+                    finish();
+            }
+        });
     }
 
     int getPaymentMode(int id)
@@ -131,10 +154,10 @@ public class BookingActivity extends AppCompatActivity {
 
     RadioGroup initializeRadioGroup()
     {
-        RadioGroup radioGroup = ViewUtils.findViewById(this, R.id.radiogroup);
-        RadioButton cashButton = ViewUtils.findViewById(this, R.id.cash_radiobutton);
-        RadioButton payTMButton = ViewUtils.findViewById(this, R.id.paytm_radiobutton);
-        RadioButton ccButton = ViewUtils.findViewById(this, R.id.cc_radiobutton);
+        RadioGroup radioGroup = findViewById(R.id.radiogroup);
+        RadioButton cashButton = findViewById(R.id.cash_radiobutton);
+        RadioButton payTMButton = findViewById(R.id.paytm_radiobutton);
+        RadioButton ccButton = findViewById(R.id.cc_radiobutton);
         //radioGroup.addView(cashButton);
         //radioGroup.addView(payTMButton);
         //radioGroup.addView(ccButton);

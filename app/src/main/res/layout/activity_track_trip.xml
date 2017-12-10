@@ -13,37 +13,25 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="478dp"
-        map:layout_constraintBottom_toTopOf="@+id/textView2"
+        map:layout_constraintBottom_toTopOf="@+id/driver_search"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="0.0"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent"
         map:layout_constraintVertical_bias="0.0"
-        tools:context="trucker.harsha.com.trucker.MapsActivity" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="368dp"
-        android:layout_height="wrap_content"
-        android:text="Searching for driver..."
-        android:visibility="invisible"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        android:textStyle="bold|italic"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="485dp" />
+        tools:context="trucker.harsha.com.trucker.com.harsha.trucker.MapsActivity" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="153dp"
         android:backgroundTint="#0000ff"
+        android:elevation="@dimen/cardview_default_elevation"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="1.0"
         map:layout_constraintStart_toStartOf="parent"
-        map:srcCompat="@color/place_autocomplete_search_hint" />
+        map:srcCompat="@android:color/white" />
 
     <ImageButton
         android:id="@+id/call_button"
@@ -53,6 +41,8 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/shape"
         android:backgroundTint="#00ff00"
+        android:elevation="8dp"
+        android:visibility="invisible"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintTop_toTopOf="@+id/imageView"
@@ -67,8 +57,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="#0000FF"
+        android:elevation="4dp"
+        android:onClick="cancelRide"
         android:text="CANCEL RIDE"
         android:textColor="#FFFFFF"
+        android:visibility="invisible"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent" />
@@ -79,10 +72,12 @@
         android:layout_height="57dp"
         android:layout_marginBottom="64dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="8dp"
+        android:elevation="4dp"
         android:src="@drawable/suhas_img"
+        android:visibility="invisible"
         map:layout_constraintBottom_toBottomOf="parent"
-        map:layout_constraintEnd_toStartOf="@+id/ride_vehicle"
+        map:layout_constraintEnd_toStartOf="@+id/vehicle_name"
         map:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -91,19 +86,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
+        android:elevation="4dp"
         android:text="Suhas"
         android:textColor="#000000"
+        android:visibility="invisible"
         map:layout_constraintStart_toEndOf="@+id/driver_img"
         map:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <TextView
-        android:id="@+id/ride_vehicle"
+        android:id="@+id/vehicle_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="56dp"
+        android:elevation="4dp"
         android:text="Tata Ace"
         android:textColor="#000000"
+        android:visibility="invisible"
         map:layout_constraintStart_toEndOf="@+id/driver_img"
         map:layout_constraintTop_toTopOf="@+id/imageView" />
 
@@ -113,9 +112,43 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:elevation="4dp"
         android:text="KA 12 F 0810"
+        android:visibility="invisible"
         map:layout_constraintStart_toEndOf="@+id/driver_img"
         map:layout_constraintTop_toBottomOf="@+id/driver_name" />
+
+    <TextView
+        android:id="@+id/driver_search"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:elevation="4dp"
+        android:text="Searching for driver..."
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold|italic"
+        android:visibility="visible"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="@+id/imageView"
+        map:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Ride In Progress"
+        map:layout_constraintBottom_toTopOf="@+id/imageView"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
-package trucker.harsha.com.trucker;
+package com.harsha.trucker;
 
 import android.location.Address;
+import android.widget.Toast;
 
 /**
  * Created by Admin on 11/11/2017.
@@ -21,5 +22,9 @@ public class Utilities {
         }
 
         return result;
+    }
+
+    public static void  myToast(String message)
+    {
     }
 }

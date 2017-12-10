@@ -1,4 +1,4 @@
-package trucker.harsha.com.trucker;
+package com.harsha.trucker;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import com.harsha.trucker.R;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -36,6 +38,7 @@ public class RegistrationActivity extends AppCompatActivity {
         user.setPassword(getEditText(R.id.password).getText().toString());
         user.setEmail(getEditText(R.id.email).getText().toString());
         user.put("phone", getEditText(R.id.phone_number).getText().toString());
+        user.put("isDriver", false);
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {

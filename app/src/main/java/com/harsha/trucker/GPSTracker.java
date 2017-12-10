@@ -1,4 +1,4 @@
-package trucker.harsha.com.trucker;
+package com.harsha.trucker;
 
 /**
  * Created by Sanath on 11/11/2017.
