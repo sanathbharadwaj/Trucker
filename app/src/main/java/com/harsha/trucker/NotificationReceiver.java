@@ -37,12 +37,12 @@ public class NotificationReceiver extends ParsePushBroadcastReceiver {
             Status status = Status.values()[s];
             switch (status) {
                 case ASSIGNED: mContext.sendBroadcast(new Intent("ASSIGNED"));
-                    notifyUser("Pickup accepted", "Pickup Accepted by Sanath");
+                    notifyUser("Pickup accepted", "Pickup Accepted by a driver");
                     break;
                 case ARRIVED: notifyUser("Driver arrived", "Driver arrived at your location");
                     mContext.sendBroadcast(new Intent("ARRIVED"));
                     break;
-                case STARTED: notifyUser("Ride Started", "Riding with Sanath");
+                case STARTED: notifyUser("Ride Started", "Riding has now started");
                     mContext.sendBroadcast(new Intent("STARTED"));
                     break;
                 case FINISHED: notifyUser("Ride Ended", "Total fare Rs. 456");

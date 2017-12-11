@@ -70,6 +70,8 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     private PolylineOptions polylineOptions;
     List<LatLng> points = new ArrayList<LatLng>();
     private Polyline polyline;
+    private ParseObject request;
+    private ParseObject driver;
 
     public enum Status{
         ACCEPTED, ASSIGNED, ARRIVED, STARTED, FINISHED, CANCELED
@@ -178,13 +180,6 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         };
         if (Build.VERSION.SDK_INT < 23) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 return;
             }
             startLocation();
@@ -196,21 +191,10 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
 
-        // Add a marker in Sydney and move the camera
-        // LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     void startLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 5, locationListener);
@@ -271,19 +255,8 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
             public void onClick(View view) {
 
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:08792111296"));
+                intent.setData(Uri.parse("tel:"+ driver.getString("phoneNumber")));
                 startActivity(intent);
-            }
-        });
-        Button button = (Button) findViewById(R.id.ride_cancel);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(TrackTripActivity.this, MapsActivity.class);
-                startActivity(intent);
-                showToast("Booking Canceled");
-                finish();
             }
         });
     }
@@ -304,6 +277,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
                     query.getInBackground(requestId, new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject object, ParseException e) {
+                            request = object;
                             if (object.getString("status").equals("assigned")) {
                                 getDriverDetails(object);
                                 status = Status.ASSIGNED;
@@ -327,7 +301,9 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         query.getInBackground(driverId, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
+                driver = object;
                 updateDriverUI(object);
+                getDriverImage(object);
                 getDriverLocation();
             }
 
@@ -393,7 +369,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
 
         TextView name = findViewById(R.id.driver_name);
         name.setVisibility(View.VISIBLE);
-        name.setText(object.getString("name"));
+        name.setText(object.getString("username"));
 
         TextView vehicleNumber = findViewById(R.id.vehicle_num);
         vehicleNumber.setVisibility(View.VISIBLE);

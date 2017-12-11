@@ -127,6 +127,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onProviderDisabled(String s) {
                 showToast("Please enable GPS");
+                finish();
 
             }
         };

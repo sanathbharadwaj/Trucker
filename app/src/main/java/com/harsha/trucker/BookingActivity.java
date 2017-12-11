@@ -23,6 +23,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import com.harsha.trucker.R;
@@ -105,6 +106,7 @@ public class BookingActivity extends AppCompatActivity {
         request.put("destination", destination);
         request.put("source", source);
         request.put("userInsId", ParseInstallation.getCurrentInstallation().getInstallationId());
+        request.put("phoneNumber", ParseUser.getCurrentUser().getString("phone"));
 
         //TODO: Catch all types of exceptions
         request.saveInBackground(new SaveCallback() {
