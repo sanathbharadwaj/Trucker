@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -29,6 +30,18 @@ public class RegistrationActivity extends AppCompatActivity {
         {
             loadToMapsActivity();
         }
+        TextView textl = (TextView) findViewById(R.id.log_acc);
+
+        // Capture button clicks
+        textl.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                // Start NewActivity.class
+                Intent intent = new Intent(RegistrationActivity.this,
+                        login.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void onSubmit(View view)

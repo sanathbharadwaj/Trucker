@@ -65,7 +65,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".RegistrationActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:label="Registration"></activity>
         <activity
             android:name=".CancelRideActivity"
             android:screenOrientation="portrait" />
@@ -106,7 +107,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login"></activity>
+        <activity android:name=".login"
+            android:label="Login">
+        </activity>
     </application>
 
 </manifest>
