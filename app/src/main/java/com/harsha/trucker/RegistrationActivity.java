@@ -44,6 +44,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if(e!=null)
                 {
+                    //TODO: Handling failures
                     showToast("Registration error");
                     return;
                 }

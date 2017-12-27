@@ -59,8 +59,8 @@ public class BookingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
-        //username = ParseUser.getCurrentUser().getUsername();
-        username = "Sanath";
+        username = ParseUser.getCurrentUser().getUsername();
+        //username = "Sanath";
         destinationET = findViewById(R.id.destination_edit_text);
         getDetails();
 
@@ -90,7 +90,7 @@ public class BookingActivity extends AppCompatActivity {
         int vehicleType = vehicleTypeSpinner.getSelectedItemPosition() - 1;
 
         RadioGroup radioGroup = findViewById(R.id.radiogroup);
-        if(!areEntriesValid(goodType, vehicleType, radioGroup))
+        if(!areEntriesValid(vehicleType, goodType, radioGroup))
             return;
         int paymentMode = getPaymentMode(radioGroup.getCheckedRadioButtonId());
 
@@ -132,7 +132,6 @@ public class BookingActivity extends AppCompatActivity {
         ParseCloud.callFunctionInBackground("newRequest", params, new FunctionCallback<Integer>() {
 
            public void done(Integer res, ParseException e) {
-                    // ratings is 4.5
                     showToast("Booking accepted");
                     String id = request.getObjectId();
                     Intent intent = new Intent(BookingActivity.this, TrackTripActivity.class);
@@ -198,7 +197,7 @@ public class BookingActivity extends AppCompatActivity {
         return isValid;
     }
 
-    public void placeSearch(View view)
+    public void placeSearchBooking(View view)
     {
         place_autocomplete_request_code = 1;
         try {
@@ -217,7 +216,7 @@ public class BookingActivity extends AppCompatActivity {
         if (requestCode == place_autocomplete_request_code) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                String address = place.getName().toString();//Check for place address
+                String address = place.getAddress().toString();//Check for place address
                 destinationET.setText(address);
                 Log.i("Place", "Place: " + place.getName());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {

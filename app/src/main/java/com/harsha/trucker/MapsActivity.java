@@ -84,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             pickUpLocation.setLatitude(latlng.latitude);
             pickUpLocation.setLongitude(latlng.longitude);
             mMap.clear();
-            mMap.addMarker(new MarkerOptions().position(latlng).title("Marker"));
+            //mMap.addMarker(new MarkerOptions().position(latlng).title("Marker"));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latlng));
             //TODO: initialize location with lastKnownLocation if no GPS enabled
             //TODO: alert user if gps disabled
@@ -121,11 +121,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onProviderEnabled(String s) {
-
+                //TODO: Call GPS functions again
             }
 
             @Override
             public void onProviderDisabled(String s) {
+                //TODO: Alert user and navigate to user settings
                 showToast("Please enable GPS");
                 finish();
 
@@ -149,21 +150,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,17));
         mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(userLocation));
+        //mMap.addMarker(new MarkerOptions().position(userLocation));
     }
 
     void startLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 5, locationListener);
+        //TODO: put it to while
         Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         pickUpLocation = lastKnownLocation;
         if (lastKnownLocation != null)
@@ -279,7 +274,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (requestCode == place_autocomplete_request_code) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                String address = place.getName().toString();//Check for place address
+                String address = place.getAddress().toString();// TODO: Check for place address
                 addressBar.setText(address);
                 selectedAddress = address;
                 search(address);

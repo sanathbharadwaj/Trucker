@@ -5,4 +5,4 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="trucker.harsha.com.trucker.com.harsha.trucker.MapsActivity" />
+    tools:context="com.harsha.trucker.MapsActivity" />

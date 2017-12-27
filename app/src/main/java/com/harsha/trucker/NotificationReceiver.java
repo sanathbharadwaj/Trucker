@@ -4,6 +4,8 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.util.Log;
 
 import com.parse.ParsePushBroadcastReceiver;
@@ -17,6 +19,8 @@ import static android.content.Context.NOTIFICATION_SERVICE;
  */
 
 public class NotificationReceiver extends ParsePushBroadcastReceiver {
+
+    private static int notificationId;
 
     public enum Status{
         ASSIGNED,  ARRIVED, STARTED, FINISHED, CANCELED
@@ -61,12 +65,17 @@ public class NotificationReceiver extends ParsePushBroadcastReceiver {
 
     void notifyUser(String title, String alert)
     {
+
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Notification notification = new Notification.Builder(context)
+                .setSound(uri)
                 .setContentTitle(title)
                 .setContentText(alert)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .build();
+        notificationId = 0;
         NotificationManager notificationManager = (NotificationManager)context.getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0,notification);
+        notificationManager.notify(notificationId,notification);
+        notificationId++;
     }
 }

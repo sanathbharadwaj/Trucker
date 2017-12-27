@@ -67,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="visible"
         map:layout_constraintGuide_percent="0.5" />
 
     <Button
@@ -89,12 +90,15 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         android:onClick="gpsRecenter"
+        android:visibility="visible"
+        android:src="@drawable/crosshairs2"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintRight_toRightOf="parent"
         map:layout_constraintTop_toTopOf="parent"
-        map:layout_constraintVertical_bias="0.29"
-        map:srcCompat="@drawable/crosshairs2" />
+        map:layout_constraintVertical_bias="0.29" />
 
     <ImageButton
         android:id="@+id/button_search"
@@ -116,13 +120,15 @@
 
     <ImageView
         android:id="@+id/marker_image"
-        android:layout_width="75dp"
-        android:layout_height="115dp"
-        android:layout_marginBottom="65dp"
+        android:layout_width="31dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="29dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:srcCompat="@drawable/marker"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/source_marker"
+        android:visibility="visible"
         map:layout_constraintBottom_toBottomOf="@+id/map"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="@+id/map"

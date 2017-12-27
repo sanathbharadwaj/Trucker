@@ -54,24 +54,21 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".BookingActivity"
             android:label="@string/title_activity_booking"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".TrackTripActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".RegistrationActivity"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".CancelRideActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TrackTripActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".CancelRideActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name="com.parse.PushService" />
 
@@ -99,8 +96,17 @@
             android:name="com.parse.push.gcm_sender_id"
             android:value="id:492871431831" />
 
-        <activity android:name=".RideEndActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".RideEndActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".user_choice">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".login"></activity>
     </application>
 
 </manifest>
