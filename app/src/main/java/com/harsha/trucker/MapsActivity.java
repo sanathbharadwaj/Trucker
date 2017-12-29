@@ -11,14 +11,23 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -35,10 +44,17 @@ import java.util.List;
 import java.util.Locale;
 
 import com.harsha.trucker.R;
+import com.parse.ParseUser;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import org.w3c.dom.Text;
 
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    private Toolbar mToolbar;
     private GoogleMap mMap;
+    NavigationView navigationView;
     LocationManager locationManager;
     LocationListener locationListener;
     Location currentLocation, pickUpLocation;
@@ -49,17 +65,98 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean recentered = false;
 
     @Override
+    public void onBackPressed() {
+        if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void Logout(){
+        ParseUser.logOut();
+        showToast("Logged Out Successfully");
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
+
+        mToolbar = (Toolbar)findViewById(R.id.nav_action_bar);
+        setSupportActionBar(mToolbar);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         addressBar = (EditText) findViewById(R.id.pick_up_edittext);
 
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        navigationView = (NavigationView)findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId())
+                {
+                    case R.id.profile:
+                        break;
+
+                    case R.id.current_trips:
+                        break;
+
+                    case R.id.past_trips:
+                        break;
+
+                    case R.id.our_rates:
+                        break;
+
+                    case R.id.payment_option:
+                        break;
+
+                    case R.id.about_us:
+                        break;
+
+                    case R.id.contact_us:
+                        break;
+
+                    case R.id.support:
+                        break;
+
+                    case R.id.logout: Logout();
+                                    Intent h = new Intent(MapsActivity.this,user_choice.class);
+                                    startActivity(h);
+                                    mDrawerLayout.closeDrawers();
+                        break;
+
+
+                }
+
+                return false;
+            }
+        });
+
+
+
 
         }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToggle.onOptionsItemSelected(item)){
+            return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public void search(String locationText) {
         //EditText location_tf = (EditText) findViewById(R.id.pick_up_edittext);
