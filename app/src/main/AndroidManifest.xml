@@ -100,7 +100,7 @@
         <activity
             android:name=".RideEndActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".user_choice">
+        <activity android:name=".UserChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -108,7 +108,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login"
+            android:name=".LoginActivity"
             android:label="Login"/>
         <activity android:name=".ProfileActivity"
             android:label="Profile"/>

@@ -162,7 +162,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     case R.id.logout:
                         Logout();
-                        Intent h9 = new Intent(MapsActivity.this, user_choice.class);
+                        Intent h9 = new Intent(MapsActivity.this, UserChoiceActivity.class);
                         startActivity(h9);
                         mDrawerLayout.closeDrawers();
                         finish();
