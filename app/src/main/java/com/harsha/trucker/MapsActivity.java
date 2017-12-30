@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -44,6 +45,10 @@ import java.util.List;
 import java.util.Locale;
 
 import com.harsha.trucker.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
@@ -54,6 +59,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private GoogleMap mMap;
+    ParseObject use;
     NavigationView navigationView;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -83,7 +89,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
 
-        mToolbar = (Toolbar)findViewById(R.id.nav_action_bar);
+        mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
         setSupportActionBar(mToolbar);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -92,49 +98,74 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         addressBar = (EditText) findViewById(R.id.pick_up_edittext);
 
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        navigationView = (NavigationView)findViewById(R.id.navigation_view);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                switch (item.getItemId())
-                {
+                switch (item.getItemId()) {
                     case R.id.profile:
+                        Intent h1 = new Intent(MapsActivity.this, ProfileActivity.class);
+                        startActivity(h1);
+                        mDrawerLayout.closeDrawers();
                         break;
 
                     case R.id.current_trips:
+                        Intent h2 = new Intent(MapsActivity.this, CurrentTripsActivity.class);
+                        startActivity(h2);
+                        mDrawerLayout.closeDrawers();
                         break;
 
                     case R.id.past_trips:
+                        Intent h3 = new Intent(MapsActivity.this, PastTripsActivity.class);
+                        startActivity(h3);
+                        mDrawerLayout.closeDrawers();
                         break;
 
                     case R.id.our_rates:
+                        Intent h4 = new Intent(MapsActivity.this, OurRatesActivity.class);
+                        startActivity(h4);
+                        mDrawerLayout.closeDrawers();
                         break;
 
                     case R.id.payment_option:
+                        Intent h5 = new Intent(MapsActivity.this, PaymentOptionsActivity.class);
+                        startActivity(h5);
+                        mDrawerLayout.closeDrawers();
                         break;
 
                     case R.id.about_us:
+                        Intent h6 = new Intent(MapsActivity.this, AboutUsActivity.class);
+                        startActivity(h6);
+                        mDrawerLayout.closeDrawers();
                         break;
 
                     case R.id.contact_us:
+                        Intent h7 = new Intent(MapsActivity.this, ContactUsActivity.class);
+                        startActivity(h7);
+                        mDrawerLayout.closeDrawers();
                         break;
 
                     case R.id.support:
+                        Intent h8 = new Intent(MapsActivity.this, SupportActivity.class);
+                        startActivity(h8);
+                        mDrawerLayout.closeDrawers();
                         break;
 
-                    case R.id.logout: Logout();
-                                    Intent h = new Intent(MapsActivity.this,UserChoiceActivity.class);
-                                    startActivity(h);
-                                    mDrawerLayout.closeDrawers();
+                    case R.id.logout:
+                        Logout();
+                        Intent h9 = new Intent(MapsActivity.this, user_choice.class);
+                        startActivity(h9);
+                        mDrawerLayout.closeDrawers();
+                        finish();
                         break;
 
 
@@ -143,11 +174,38 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return false;
             }
         });
+        loadUserData();
+    }
+
+    void loadUserData() {
+
+        ParseQuery query = new ParseQuery("User");
+        query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e != null) {
+                    showToast("Failed to load user data");
+                    return;
+                }
+                updateUserUI();
+            }
+        });
+    }
+
+    void updateUserUI() {
+        getTextView(R.id.profile_text).setText(ParseUser.getCurrentUser().getUsername());
+        getTextView(R.id.phone_text).setText(ParseUser.getCurrentUser().getString("phone"));
+    }
 
 
 
 
-        }
+
+    TextView getTextView(int id)
+    {
+        return (TextView)findViewById(id);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

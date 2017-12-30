@@ -53,7 +53,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"
+            android:label="Trucker"
             android:screenOrientation="portrait" />
         <activity
             android:name=".BookingActivity"
@@ -65,8 +65,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".RegistrationActivity"
-            android:screenOrientation="portrait"
-            android:label="Registration"></activity>
+            android:label="Registration"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CancelRideActivity"
             android:screenOrientation="portrait" />
@@ -100,14 +100,31 @@
         <activity
             android:name=".RideEndActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".UserChoiceActivity">
+        <activity android:name=".user_choice">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"></activity>
+        <activity
+            android:name=".login"
+            android:label="Login"/>
+        <activity android:name=".ProfileActivity"
+            android:label="Profile"/>
+        <activity android:name=".CurrentTripsActivity"
+            android:label="Current Trips"/>
+        <activity android:name=".PastTripsActivity"
+            android:label="Past Trips"/>
+        <activity android:name=".OurRatesActivity"
+            android:label="Rates"/>
+        <activity android:name=".PaymentOptionsActivity"
+            android:label="Payment"/>
+        <activity android:name=".AboutUsActivity"
+            android:label="About Us"/>
+        <activity android:name=".ContactUsActivity"
+            android:label="Contact Us"/>
+        <activity android:name=".SupportActivity"></activity>
     </application>
 
 </manifest>
