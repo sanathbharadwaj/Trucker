@@ -225,7 +225,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onProviderDisabled(String s) {
                 //TODO: Alert user and navigate to user settings
                 showToast("Please enable GPS");
-                finish();
 
             }
         };

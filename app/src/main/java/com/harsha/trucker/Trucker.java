@@ -46,7 +46,7 @@ public class Trucker extends Application {
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
 
-        ParseUser.enableAutomaticUser();
+       // ParseUser.enableAutomaticUser();
 
         ParseACL defaultACL = new ParseACL();
         defaultACL.setPublicReadAccess(true);

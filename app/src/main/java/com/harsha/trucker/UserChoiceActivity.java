@@ -14,8 +14,8 @@ public class UserChoiceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_choice);
-
-        if(ParseUser.getCurrentUser() != null)
+        ParseUser user = ParseUser.getCurrentUser();
+        if(user!=null)
             loadToMapsActivity();
 
 
