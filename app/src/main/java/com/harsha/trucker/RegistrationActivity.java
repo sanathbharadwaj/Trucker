@@ -17,19 +17,10 @@ import com.harsha.trucker.R;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
-    final String USER_REGISTERED = "isRegistered";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        preferences = getSharedPreferences("com.harsha.trucker",MODE_PRIVATE);
-        if(preferences.getBoolean(USER_REGISTERED,false))
-        {
-            loadToMapsActivity();
-        }
         TextView textl = (TextView) findViewById(R.id.log_acc);
 
         // Capture button clicks
@@ -38,7 +29,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 // Start NewActivity.class
                 Intent intent = new Intent(RegistrationActivity.this,
-                        login.class);
+                        LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -62,9 +53,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     return;
                 }
                 showToast("Registration successful");
-                editor = preferences.edit();
-                editor.putBoolean(USER_REGISTERED, true);
-                editor.apply();
                 loadToMapsActivity();
 
             }

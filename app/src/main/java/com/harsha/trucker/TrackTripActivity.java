@@ -136,6 +136,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     void rideFinished()
     {
         Intent intent = new Intent(this, RideEndActivity.class);
+        intent.putExtra("id", request.getObjectId());
         startActivity(intent);
     }
 

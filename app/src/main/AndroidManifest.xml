@@ -100,16 +100,14 @@
         <activity
             android:name=".RideEndActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".user_choice">
+        <activity android:name=".UserChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login"
-            android:label="Login">
-        </activity>
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>
