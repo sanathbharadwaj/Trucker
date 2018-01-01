@@ -95,7 +95,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         intentFilter.addAction("CANCELLED");
         registerReceiver(broadcastReceiver, intentFilter);
         polylineOptions = new PolylineOptions().width(5).color(Color.RED).geodesic(true);
-
+        status = Status.ACCEPTED;
     }
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -135,6 +135,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
 
     void rideFinished()
     {
+        status = Status.FINISHED;
         Intent intent = new Intent(this, RideEndActivity.class);
         intent.putExtra("id", request.getObjectId());
         startActivity(intent);
