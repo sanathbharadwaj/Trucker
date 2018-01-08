@@ -57,7 +57,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".BookingActivity"
-            android:label="@string/title_activity_booking"
+            android:label="Booking Details"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

@@ -3,12 +3,14 @@ package com.harsha.trucker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -34,11 +36,13 @@ public class BookingActivity extends AppCompatActivity {
     String username;
     String source, destination;
     LatLng pickUpLocation;
-    EditText destinationET;
+    TextView destinationET;
     private Spinner goodTypeSpinner;
     private Spinner vehicleTypeSpinner;
     private int place_autocomplete_request_code;
     private ParseObject request;
+    Toolbar mToolbar;
+
 
     public enum PaymentMode
     {
@@ -54,6 +58,11 @@ public class BookingActivity extends AppCompatActivity {
         FOOD,
         FURNITURE
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +74,10 @@ public class BookingActivity extends AppCompatActivity {
         getDetails();
 
 
+        mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
 
@@ -75,7 +88,7 @@ public class BookingActivity extends AppCompatActivity {
         double latitude = intent.getDoubleExtra("latitude",0);
         double longitude = intent.getDoubleExtra("longitude",0);
         pickUpLocation = new LatLng(latitude,longitude);
-        EditText sourceEt =  findViewById(R.id.pick_up_edittext);
+        TextView sourceEt =  findViewById(R.id.pick_up_edittext);
         sourceEt.setText(source);
         sourceEt.setClickable(false);
 

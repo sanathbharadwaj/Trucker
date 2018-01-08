@@ -119,6 +119,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+        locationManager.removeUpdates(locationListener);
     }
 
     void driverArrived()
@@ -129,9 +130,11 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
 
     void rideStarted()
     {
+        locationManager.removeUpdates(locationListener);
         getTextView(R.id.status_text).setText("Ride in progress");
         status = Status.STARTED;
     }
+
 
     void rideFinished()
     {
@@ -145,6 +148,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
+
 
 
     @Override

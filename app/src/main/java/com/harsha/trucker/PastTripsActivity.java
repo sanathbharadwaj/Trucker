@@ -4,6 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import com.thetechnocafe.gurleensethi.liteutils.RecyclerAdapterUtil;
+
+import java.util.ArrayList;
+
 public class PastTripsActivity extends AppCompatActivity {
 
     Toolbar mToolbar;
@@ -23,4 +27,6 @@ public class PastTripsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
+
+
 }

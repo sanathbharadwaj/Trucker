@@ -67,7 +67,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     String selectedAddress;
     public Location lastLocation;
     GoogleMap.OnCameraIdleListener onCameraIdleListener;
-    EditText addressBar;
+    TextView addressBar;
     boolean recentered = false;
 
     @Override
@@ -96,7 +96,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        addressBar = (EditText) findViewById(R.id.pick_up_edittext);
+        addressBar = (TextView) findViewById(R.id.pick_up_edittext);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
@@ -194,7 +194,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     void updateUserUI() {
-        getTextView(R.id.profile_text).setText(ParseUser.getCurrentUser().getUsername());
+        getTextView(R.id.profile_text).setText(ParseUser.getCurrentUser().getString("name"));
         getTextView(R.id.phone_text).setText(ParseUser.getCurrentUser().getString("phone"));
     }
 

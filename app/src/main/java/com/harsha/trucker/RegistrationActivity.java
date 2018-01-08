@@ -41,6 +41,7 @@ public class RegistrationActivity extends AppCompatActivity {
         user.setUsername(getEditText(R.id.username).getText().toString());
         user.setPassword(getEditText(R.id.password).getText().toString());
         user.setEmail(getEditText(R.id.email).getText().toString());
+        user.put("name",getEditText(R.id.name_field).getText().toString());
         user.put("phone", getEditText(R.id.phone_number).getText().toString());
         user.put("isDriver", false);
         user.signUpInBackground(new SignUpCallback() {
