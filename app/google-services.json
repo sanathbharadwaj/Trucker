@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "492871431831",
+    "firebase_url": "https://truckerandroid-188109.firebaseio.com",
+    "project_id": "truckerandroid-188109",
+    "storage_bucket": "truckerandroid-188109.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492871431831:android:40a86229431602ad",
+        "android_client_info": {
+          "package_name": "com.harsha.trucker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "492871431831-8snrtvtleolmt3nr91db3gno5n2eqnmm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.harsha.trucker",
+            "certificate_hash": "66a5c11c0f8588cc99230728d0cd6d8f9ad607a2"
+          }
+        },
+        {
+          "client_id": "492871431831-sd0oikeb6unht7l27u257n2e6kd4t932.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO957ple7mI79Jxn0ad2SkBHcbq8225B8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "492871431831-sd0oikeb6unht7l27u257n2e6kd4t932.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

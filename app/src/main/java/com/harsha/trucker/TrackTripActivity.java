@@ -1,10 +1,13 @@
 package com.harsha.trucker;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,12 +18,12 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,8 +48,6 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import com.harsha.trucker.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,10 +69,12 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     public static Status status = Status.ACCEPTED;
     private Marker userMarker;
     private PolylineOptions polylineOptions;
-    List<LatLng> points = new ArrayList<LatLng>();
+    List<LatLng> driverLocations = new ArrayList<LatLng>();
     private Polyline polyline;
     private ParseObject request;
     private ParseObject driver;
+    private SharedPreferences.Editor editor;
+    private String idFromLocal;
 
     public enum Status{
         ACCEPTED, ASSIGNED, ARRIVED, STARTED, FINISHED, CANCELED
@@ -85,8 +88,8 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        findCurrentTrip();
         initializeButtons();
-        searchDriver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("ASSIGNED");
         intentFilter.addAction("ARRIVED");
@@ -96,6 +99,45 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         registerReceiver(broadcastReceiver, intentFilter);
         polylineOptions = new PolylineOptions().width(5).color(Color.RED).geodesic(true);
         status = Status.ACCEPTED;
+    }
+
+    void findCurrentTrip()
+    {
+        SharedPreferences prefs = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE);
+        boolean isRunning = prefs.getBoolean("isRunning", false);
+        if(!isRunning) {
+            editor = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE).edit();
+            editor.putBoolean("isRunning", true);
+            editor.apply();
+            searchDriver();
+            return;
+        }
+        ParseQuery query = new ParseQuery("Request");
+        idFromLocal = prefs.getString("requestId", null);
+        if(idFromLocal ==null)
+        {
+            showToast("Error loading current trip");
+            finish();
+        }
+        query.getInBackground(idFromLocal, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                request = object;
+                updateRideStatus(request);
+            }
+        });
+    }
+
+    void updateRideStatus(ParseObject mRequest)
+    {
+        switch (mRequest.getString("status"))
+        {
+            case "accepted": searchDriver(); status = Status.ACCEPTED;break;
+            case "assigned": searchDriver();break;
+            case "arrived": searchDriver(); driverArrived();break;
+            case "started": searchDriver(); rideStarted();break;
+            case "ended": rideFinished();break;
+        }
     }
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -139,6 +181,8 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     void rideFinished()
     {
         status = Status.FINISHED;
+        editor.putBoolean("isRunning", false);
+        editor.apply();
         Intent intent = new Intent(this, RideEndActivity.class);
         intent.putExtra("id", request.getObjectId());
         startActivity(intent);
@@ -176,7 +220,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
 
             @Override
             public void onProviderEnabled(String s) {
-
+                showSettingsAlert();
             }
 
             @Override
@@ -241,14 +285,14 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
     }
 
-    void updatePolylines(LatLng latLng)
+    void updatePolylines(List<LatLng> latLngs)
     {
 
        // LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        points.add(latLng);
+        driverLocations.addAll(latLngs);
         if(polyline == null)
             polyline = mMap.addPolyline(polylineOptions);
-        polyline.setPoints(points);
+        polyline.setPoints(driverLocations);
 
     }
 
@@ -272,6 +316,12 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         driverLoading = false;
         Intent intent = getIntent();
         requestId = intent.getStringExtra("requestId");
+        if(requestId == null)
+        {
+            requestId = idFromLocal;
+        }
+        editor.putString("requestId", requestId);
+        editor.apply();
         final Handler handler = new Handler();
         assigned = false;
         handler.postDelayed(new Runnable() {
@@ -284,7 +334,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
                         @Override
                         public void done(ParseObject object, ParseException e) {
                             request = object;
-                            if (object.getString("status").equals("assigned")) {
+                            if (!object.getString("status").equals("accepted")) {
                                 getDriverDetails(object);
                                 status = Status.ASSIGNED;
                                 assigned = true;
@@ -297,9 +347,8 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
                 if(!assigned)
                     handler.postDelayed(this, 3000);
             }
-        }, 3000);
+        }, 100);
     }
-
     void getDriverDetails(ParseObject object)
     {
         driverId = object.getString("driverId");
@@ -326,14 +375,17 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
                 query.getInBackground(driverId, new GetCallback<ParseObject>() {
                     @Override
                     public void done(ParseObject object, ParseException e) {
-                        ParseGeoPoint point = object.getParseGeoPoint("driverLocation");
-                        if(point == null)
+                        List<ParseGeoPoint> points = object.getList("driverPath");
+                        if(points == null || points.size()==0)
                             return;
+                        ParseGeoPoint point = points.get(points.size()-1);
                         if(driverMarker != null)
                             driverMarker.remove();
                         LatLng latLng = new LatLng(point.getLatitude(), point.getLongitude());
-                        if(status == Status.STARTED)
-                            updatePolylines(latLng);
+                        if(status == Status.STARTED) {
+                            List<LatLng> latLngs = geoPointToLatLng(points);
+                            updatePolylines(latLngs);
+                        }
                         driverMarker = mMap.addMarker(new MarkerOptions().position(latLng)
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                     }
@@ -394,6 +446,46 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     {
         return (TextView)findViewById(id);
     }
+
+    List<LatLng> geoPointToLatLng(List<ParseGeoPoint> points)
+    {
+        List<LatLng> latLngs = new ArrayList<>();
+        for(ParseGeoPoint point : points){
+            latLngs.add(new LatLng(point.getLatitude(), point.getLongitude()));
+        }
+        return  latLngs;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+    }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("GPS settings");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("GPS is not enabled. Please enable GPS");
+
+        // On pressing Settings button
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
 
     public void cancelRide(View view)
     {
