@@ -36,20 +36,20 @@ public class NotificationReceiver extends ParsePushBroadcastReceiver {
         Log.i("Push", "Message Received");
         try {
             JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
-            int title = json.getInt("title");
+            String extra = json.getString("title");
             int s = json.getInt("alert");
             Status status = Status.values()[s];
             switch (status) {
                 case ASSIGNED: mContext.sendBroadcast(new Intent("ASSIGNED"));
-                    notifyUser("Pickup accepted", "Pickup Accepted by a driver");
+                    notifyUser("Pickup accepted", "Pickup Accepted by " + extra);
                     break;
                 case ARRIVED: notifyUser("Driver arrived", "Driver arrived at your location");
                     mContext.sendBroadcast(new Intent("ARRIVED"));
                     break;
-                case STARTED: notifyUser("Ride Started", "Riding has now started");
+                case STARTED: notifyUser("Ride Started", "Riding with " + extra);
                     mContext.sendBroadcast(new Intent("STARTED"));
                     break;
-                case FINISHED: notifyUser("Ride Ended", "Total fare Rs. 456");
+                case FINISHED: notifyUser("Ride Ended", "Total fare " + extra);
                     mContext.sendBroadcast(new Intent("FINISHED"));
                     break;
                 case CANCELED: notifyUser("Ride Cancelled", "Ride has been cancelled");

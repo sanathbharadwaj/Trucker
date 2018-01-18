@@ -1,5 +1,8 @@
 package com.harsha.trucker;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.widget.Toast;
 
@@ -26,5 +29,20 @@ public class Utilities {
 
     public static void  myToast(String message)
     {
+    }
+
+    public static void loadActivity(Context context , Class myClass )
+    {
+        Intent intent = new Intent(context, myClass);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        context.startActivity(intent);
+    }
+
+    public static void loadActivityAndFinish(Context context , Class myClass )
+    {
+        Intent intent = new Intent(context, myClass);
+        context.startActivity(intent);
+        Activity activity = (Activity) context;
+        activity.finish();
     }
 }

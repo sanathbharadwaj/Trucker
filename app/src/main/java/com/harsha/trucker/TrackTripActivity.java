@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.MainThread;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -48,6 +51,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,12 +61,9 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     private GoogleMap mMap;
     LocationManager locationManager;
     LocationListener locationListener;
-    String selectedAddress;
-    GoogleMap.OnCameraIdleListener onCameraIdleListener;
     boolean recentered = false;
     private boolean assigned;
     private boolean driverLoading;
-    int bookingState = 0;
     private String driverId;
     private Marker driverMarker;
     private String requestId;
@@ -75,6 +76,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     private ParseObject driver;
     private SharedPreferences.Editor editor;
     private String idFromLocal;
+    private List<LatLng> latLngs;
 
     public enum Status{
         ACCEPTED, ASSIGNED, ARRIVED, STARTED, FINISHED, CANCELED
@@ -104,15 +106,15 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     void findCurrentTrip()
     {
         SharedPreferences prefs = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE);
+        editor = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE).edit();
         boolean isRunning = prefs.getBoolean("isRunning", false);
         if(!isRunning) {
-            editor = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE).edit();
             editor.putBoolean("isRunning", true);
             editor.apply();
             searchDriver();
             return;
         }
-        ParseQuery query = new ParseQuery("Request");
+        ParseQuery<ParseObject> query = new ParseQuery<>("Request");
         idFromLocal = prefs.getString("requestId", null);
         if(idFromLocal ==null)
         {
@@ -136,7 +138,8 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
             case "assigned": searchDriver();break;
             case "arrived": searchDriver(); driverArrived();break;
             case "started": searchDriver(); rideStarted();break;
-            case "ended": rideFinished();break;
+            case "finished": rideFinished();break;
+            case "cancelled": rideCancelled();break;
         }
     }
 
@@ -192,6 +195,9 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
+        editor.putBoolean("isRunning", false);
+        editor.commit();
+        finish();
     }
 
 
@@ -329,7 +335,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
             public void run() {
                 if(!driverLoading) {
                     driverLoading = true;
-                    ParseQuery query = new ParseQuery("Request");
+                    ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Request");
                     query.getInBackground(requestId, new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject object, ParseException e) {
@@ -352,7 +358,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     void getDriverDetails(ParseObject object)
     {
         driverId = object.getString("driverId");
-        ParseQuery query = new ParseQuery("Driver");
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Driver");
         query.getInBackground(driverId, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
@@ -368,33 +374,53 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     void getDriverLocation()
     {
         final Handler handler = new Handler();
+        //TODO: improve this code
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ParseQuery query = new ParseQuery("Driver");
-                query.getInBackground(driverId, new GetCallback<ParseObject>() {
+                ParseQuery<ParseObject> query = new ParseQuery<>("Request");
+                query.getInBackground(request.getObjectId(), new GetCallback<ParseObject>() {
                     @Override
                     public void done(ParseObject object, ParseException e) {
-                        List<ParseGeoPoint> points = object.getList("driverPath");
+                        /*List<ParseGeoPoint> points = object.getList("driverPath");
                         if(points == null || points.size()==0)
                             return;
-                        ParseGeoPoint point = points.get(points.size()-1);
-                        if(driverMarker != null)
-                            driverMarker.remove();
-                        LatLng latLng = new LatLng(point.getLatitude(), point.getLongitude());
-                        if(status == Status.STARTED) {
-                            List<LatLng> latLngs = geoPointToLatLng(points);
-                            updatePolylines(latLngs);
-                        }
-                        driverMarker = mMap.addMarker(new MarkerOptions().position(latLng)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        ParseGeoPoint point = points.get(points.size()-1);*/
+                        latLngs = new ArrayList<>();
+                        ParseFile file = object.getParseFile("driverPath");
+                        if(file!=null)
+                        file.getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] data, ParseException e) {
+                                Type listType = new TypeToken<List<LatLng>>() {}.getType();
+                                String pathJSON = new String(data);
+                                Gson gson = new Gson();
+                                latLngs = gson.fromJson(pathJSON, listType);
+                                if(latLngs == null || latLngs.size()==0)
+                                    return;
+                                updateDriverLocation();
+                            }
+                        });
+
                     }
                 });
                 if(status != Status.FINISHED)
-                handler.postDelayed(this, 15000);
+                handler.postDelayed(this, 10000);
 
             }
-        }, 15000);
+        }, 1000);
+    }
+
+    private void updateDriverLocation() {
+        LatLng point = latLngs.get(latLngs.size()-1);
+        if(driverMarker != null)
+            driverMarker.remove();
+        LatLng latLng = new LatLng(point.latitude, point.longitude);
+        if(status == Status.STARTED) {
+            updatePolylines(latLngs);
+        }
+        driverMarker = mMap.addMarker(new MarkerOptions().position(latLng)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
     }
 
     void getDriverImage(final ParseObject object)
@@ -432,7 +458,6 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         TextView vehicleNumber = findViewById(R.id.vehicle_num);
         vehicleNumber.setVisibility(View.VISIBLE);
         vehicleNumber.setText(object.getString("vehicleNumber"));
-
 
         TextView vehicleName = findViewById(R.id.vehicle_name);
         vehicleName.setVisibility(View.VISIBLE);

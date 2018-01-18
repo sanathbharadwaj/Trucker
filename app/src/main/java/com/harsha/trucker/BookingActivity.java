@@ -127,7 +127,7 @@ public class BookingActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if(e==null)
                 {
-                    callCloud();
+                    notifyDrivers();
                 }
                 else
                 {
@@ -136,6 +136,23 @@ public class BookingActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    void notifyDrivers()
+    {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("requestId", request.getObjectId());
+        ParseCloud.callFunctionInBackground("requestRide", params, new FunctionCallback<Integer>() {
+
+            public void done(Integer res, ParseException e) {
+                showToast("Booking accepted");
+                String id = request.getObjectId();
+                Intent intent = new Intent(BookingActivity.this, TrackTripActivity.class);
+                intent.putExtra("requestId", id);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     void callCloud()

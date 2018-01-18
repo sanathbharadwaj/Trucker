@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,19 +17,15 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -41,20 +38,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
+import static com.harsha.trucker.Utilities.*;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import com.harsha.trucker.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import org.w3c.dom.Text;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -92,6 +88,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
         initializeNavigationDrawer();
+        checkForCurrentTrip();
+        installation();
+
+    }
+
+    private void installation() {
+        ParseQuery<ParseObject> driver = ParseQuery.getQuery("Driver");
+        ParseQuery<ParseInstallation> query = ParseQuery.getQuery("Installation");
+       // query.whereMatchesQuery("driver", driver);
+        //query.whereExists("driver");
+        query.findInBackground(new FindCallback<ParseInstallation>() {
+            @Override
+            public void done(List<ParseInstallation> objects, ParseException e) {
+                showToast("Size: " + objects.size());
+            }
+        });
+
+    }
+
+    void checkForCurrentTrip()
+    {
+        SharedPreferences prefs = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE);
+        if(prefs.getBoolean("isRunning", false))
+        {
+            loadActivityAndFinish(this, TrackTripActivity.class);
+        }
+        else
         loadUserData();
     }
 
@@ -186,7 +209,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     void loadUserData() {
 
-        ParseQuery query = new ParseQuery("User");
+        ParseQuery<ParseObject> query = new ParseQuery<>("User");
         query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -281,6 +304,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onProviderEnabled(String s) {
                 //TODO: Call GPS functions again
+                initializeLocationService();
             }
 
             @Override
@@ -289,6 +313,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         };
+       initializeLocationService();
+    }
+
+    void initializeLocationService()
+    {
         if (Build.VERSION.SDK_INT < 23) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
@@ -462,7 +491,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
-                finish();
             }
         });
 

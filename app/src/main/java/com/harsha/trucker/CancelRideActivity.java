@@ -45,7 +45,7 @@ public class CancelRideActivity extends AppCompatActivity {
         query.getInBackground(requestId, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
-                object.put("status", "canceled");
+                object.put("status", "cancelled");
                 object.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
