@@ -295,10 +295,10 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     {
 
        // LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        driverLocations.addAll(latLngs);
+        //driverLocations.addAll(latLngs);
         if(polyline == null)
             polyline = mMap.addPolyline(polylineOptions);
-        polyline.setPoints(driverLocations);
+        polyline.setPoints(latLngs);
 
     }
 
