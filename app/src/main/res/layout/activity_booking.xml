@@ -7,8 +7,6 @@
     tools:context="com.harsha.trucker.BookingActivity">
 
 
-
-
     <include
         layout="@layout/content_booking"
         android:layout_width="match_parent"

@@ -7,11 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.harsha.trucker.RideEndActivity.*;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -41,6 +44,8 @@ public class BookingActivity extends AppCompatActivity {
     private Spinner vehicleTypeSpinner;
     private int place_autocomplete_request_code;
     private ParseObject request;
+    private ProgressBar imgLoad;
+    private ImageView imgBack1;
     Toolbar mToolbar;
 
 
@@ -74,10 +79,11 @@ public class BookingActivity extends AppCompatActivity {
         getDetails();
 
 
-        mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
+
+        /*mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
 
     }
 
@@ -96,6 +102,8 @@ public class BookingActivity extends AppCompatActivity {
 
     public void onConfirmBooking(View view)
     {
+         imgLoad = (ProgressBar)findViewById(R.id.loader);
+         imgBack1 = (ImageView)findViewById(R.id.img_back1);
         destination = destinationET.getText().toString();
         goodTypeSpinner = findViewById(R.id.good_type);
         int goodType = goodTypeSpinner.getSelectedItemPosition() - 1;
@@ -127,6 +135,9 @@ public class BookingActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if(e==null)
                 {
+                    callCloud();
+                    imgLoad.setVisibility(View.VISIBLE);
+                    imgBack1.setVisibility(View.VISIBLE);
                     notifyDrivers();
                 }
                 else

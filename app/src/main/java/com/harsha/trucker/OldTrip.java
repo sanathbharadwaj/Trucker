@@ -1,16 +1,19 @@
 package com.harsha.trucker;
 
+import java.util.Date;
+
 /**
  * Created by LENOVO on 08-01-2018.
  */
 
 public class OldTrip {
 
-    private String name, realName, source, destination, cost, date, rideDuration;
+    private String name, realName, source, destination, cost, rideDuration;
+    private Date date;
 
 
 
-    public OldTrip(String name, String realName, String source, String destination, String cost, String date, String rideDuration) {
+    public OldTrip(String name, String realName, String source, String destination, String cost, Date date, String rideDuration) {
         this.name = name;
         this.realName = realName;
         this.source = source;
@@ -40,7 +43,7 @@ public class OldTrip {
         return cost;
     }
 
-    public String getDate() {
+    public Date getdate() {
         return date;
     }
 

@@ -9,6 +9,7 @@
     android:layout_height="match_parent"
     android:background="#D3D3D3">
 
+
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -178,7 +179,7 @@
             map:layout_constraintStart_toStartOf="@+id/vehicle_type"
             map:layout_constraintTop_toTopOf="@+id/pay_bg" />
 
-      <!--  <View
+        <!--  <View
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:background="#CCCCCC"
@@ -306,9 +307,45 @@
                 map:layout_constraintVertical_bias="0.967" />
         </RadioGroup>
 
+
     </android.support.constraint.ConstraintLayout>
-    <include layout="@layout/navigation_action"
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/navigation_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <ImageView
+        android:id="@+id/img_back1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:src="#A6000000"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.402"/>
+
+    <ProgressBar
+        android:id="@+id/loader"
+        android:layout_width="57dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/cardview_light_background"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

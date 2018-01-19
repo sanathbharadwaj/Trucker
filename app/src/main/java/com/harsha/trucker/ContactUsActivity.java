@@ -30,7 +30,7 @@ public class ContactUsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_us);
 
-        call();
+      //  call();
         calls();
         mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
         setSupportActionBar(mToolbar);
@@ -41,19 +41,19 @@ public class ContactUsActivity extends AppCompatActivity {
 
     }
 
-    void call()
-    {
-        ImageButton btn2 = (ImageButton) findViewById(R.id.contact_button);
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    //void call()
+    //{
+    //  ImageButton btn2 = (ImageButton) findViewById(R.id.contact_button);
+      //btn2.setOnClickListener(new View.OnClickListener() {
+        //  @Override
+          //public void onClick(View view) {
 
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:8792111296"));
-                startActivity(intent);
-            }
-        });
-    }
+            //  Intent intent = new Intent(Intent.ACTION_DIAL);
+              //intent.setData(Uri.parse("tel:8792111296"));
+                //artActivity(intent);
+         //   }
+       // });
+   // }
     void calls()
     {
         TextView btn12 = (TextView) findViewById(R.id.phone_us);

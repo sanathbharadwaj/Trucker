@@ -26,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -58,6 +59,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private GoogleMap mMap;
+    Button rate;
     ParseObject use;
     NavigationView navigationView;
     LocationManager locationManager;
@@ -75,6 +77,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             this.mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            //this.finish();
         }
     }
 
@@ -90,6 +93,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         initializeNavigationDrawer();
         checkForCurrentTrip();
         installation();
+        init();
 
     }
 
@@ -107,15 +111,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    void checkForCurrentTrip()
-    {
+    void checkForCurrentTrip() {
         SharedPreferences prefs = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE);
-        if(prefs.getBoolean("isRunning", false))
-        {
+        if (prefs.getBoolean("isRunning", false)) {
             loadActivityAndFinish(this, TrackTripActivity.class);
-        }
-        else
-        loadUserData();
+        } else
+            loadUserData();
+    }
+
+
+    void init(){
+        rate = (Button) findViewById(R.id.rate_card_button);
+
+        // Capture button clicks
+        rate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                // Start NewActivity.class
+                Intent intent = new Intent(MapsActivity.this,
+                        OurRatesActivity.class);
+                startActivity(intent);
+            }
+        });
+       // loadUserData();
     }
 
     void initializeNavigationDrawer()
@@ -147,7 +165,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Intent h1 = new Intent(MapsActivity.this, ProfileActivity.class);
                         startActivity(h1);
                         mDrawerLayout.closeDrawers();
-                        break;
+                        break;////////////
 
                     case R.id.current_trips:
                         Intent h2 = new Intent(MapsActivity.this, CurrentTripsActivity.class);
@@ -205,6 +223,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return false;
             }
         });
+        //loadUserData();
     }
 
     void loadUserData() {

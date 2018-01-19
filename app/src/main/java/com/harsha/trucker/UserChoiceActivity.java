@@ -29,6 +29,7 @@ public class UserChoiceActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(UserChoiceActivity.this,
                         RegistrationActivity.class);
                 startActivity(myIntent);
+                finish();
             }
         });
         Button buttonl = (Button) findViewById(R.id.login_button);
@@ -41,6 +42,7 @@ public class UserChoiceActivity extends AppCompatActivity {
                 Intent intent = new Intent(UserChoiceActivity.this,
                         LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

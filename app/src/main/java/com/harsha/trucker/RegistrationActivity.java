@@ -1,11 +1,9 @@
 package com.harsha.trucker;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +16,6 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-
-import com.harsha.trucker.R;
 
 import java.util.concurrent.TimeUnit;
 
@@ -44,15 +40,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
     public void onSubmit(View view)
     {
-       phoneAuthenticate();
+        showToast("Verifying phone number");
+        phoneAuthenticate();
     }
 
-    void registerUser()
-    {
+
+    void registerUser(){
         ParseUser user = new ParseUser();
         user.setUsername(getEditText(R.id.username).getText().toString());
         user.setPassword(getEditText(R.id.password).getText().toString());
-        user.setEmail(getEditText(R.id.email).getText().toString());
+        user.setEmail(getEditText(R.id.email_add).getText().toString());
         user.put("name",getEditText(R.id.name_field).getText().toString());
         user.put("phone", getEditText(R.id.phone_number).getText().toString());
         user.put("isDriver", false);

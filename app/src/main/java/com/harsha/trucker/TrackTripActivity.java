@@ -125,7 +125,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void done(ParseObject object, ParseException e) {
                 request = object;
-                updateRideStatus(request);
+                updateRideStatus(object);
             }
         });
     }
@@ -189,6 +189,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         Intent intent = new Intent(this, RideEndActivity.class);
         intent.putExtra("id", request.getObjectId());
         startActivity(intent);
+        finish();
     }
 
     void rideCancelled()

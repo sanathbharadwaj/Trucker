@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +19,10 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private ImageView imgBack;
+    private ImageView imgBack1;
+    private ProgressBar imgLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +39,21 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this,
                         RegistrationActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
+
     }
 
+
+
     public void logIn(View view){
-         EditText username = (EditText)findViewById(R.id.username);
+        EditText username = (EditText)findViewById(R.id.username);
         EditText password = (EditText)findViewById(R.id.password);
+        imgBack=(ImageView) findViewById(R.id.img_back);
+        imgLoad = (ProgressBar)findViewById(R.id.loader);
+        imgBack1 = (ImageView)findViewById(R.id.img_back1);
+
 
         if (username.getText().toString().matches("")||password.getText().toString().matches("")){
             showToast("Please fill all fields");
@@ -49,16 +63,28 @@ public class LoginActivity extends AppCompatActivity {
                             public void done(ParseUser user, ParseException e) {
 
                                 if (user != null) {
+                                    //imgBack.setVisibility(View.VISIBLE);
+                                    //imgLoad.setVisibility(View.VISIBLE);
+                                    imgBack.setVisibility(View.VISIBLE);
+                                    imgLoad.setVisibility(View.VISIBLE);
+                                    imgBack1.setVisibility(View.VISIBLE);
+
                                     showToast("Login Successful");
                                     loadToMapsActivity();
                                     finish();
                                 } else {
+                                    //imgBack.setVisibility(View.GONE);
+                                    //imgLoad.setVisibility(View.GONE);
                                     showToast(e.getMessage());
                                 }
+                                //imgBack.setVisibility(View.GONE);
+                                //imgLoad.setVisibility(View.GONE);
                             }
                         });
                     }
+
         }
+
 
     void loadToMapsActivity()
     {
@@ -70,4 +96,5 @@ public class LoginActivity extends AppCompatActivity {
     void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+
 }

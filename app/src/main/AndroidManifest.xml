@@ -109,22 +109,30 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="Login"/>
-        <activity android:name=".ProfileActivity"
-            android:label="Profile"/>
-        <activity android:name=".CurrentTripsActivity"
-            android:label="Current Trips"/>
-        <activity android:name=".PastTripsActivity"
-            android:label="Past Trips"/>
-        <activity android:name=".OurRatesActivity"
-            android:label="Rates"/>
-        <activity android:name=".PaymentOptionsActivity"
-            android:label="Payment"/>
-        <activity android:name=".AboutUsActivity"
-            android:label="About Us"/>
-        <activity android:name=".ContactUsActivity"
-            android:label="Contact Us"/>
-        <activity android:name=".SupportActivity"></activity>
+            android:label="Login" />
+        <activity
+            android:name=".ProfileActivity"
+            android:label="Profile" />
+        <activity
+            android:name=".CurrentTripsActivity"
+            android:label="Current Trips" />
+        <activity
+            android:name=".PastTripsActivity"
+            android:label="Past Trips" />
+        <activity
+            android:name=".OurRatesActivity"
+            android:label="Rates" />
+        <activity
+            android:name=".PaymentOptionsActivity"
+            android:label="Payment" />
+        <activity
+            android:name=".AboutUsActivity"
+            android:label="About Us" />
+        <activity
+            android:name=".ContactUsActivity"
+            android:label="Contact Us" />
+        <activity android:name=".SupportActivity" />
+        <activity android:name=".EditProfileActivity"></activity>
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -25,27 +26,34 @@ public class PastTripsAdapter extends RecyclerView.Adapter<PastTripsAdapter.Hero
     private Context context;
 
     private static int currentPosition = 0;
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy , HH:mm:ss");
+
+
+
 
     public PastTripsAdapter(List<OldTrip> tripList, Context context) {
         this.tripList = tripList;
         this.context = context;
     }
 
+
     @Override
     public HeroViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.trips_list, parent, false);
         return new HeroViewHolder(v);
+
     }
 
     @Override
     public void onBindViewHolder(final HeroViewHolder holder, final int position) {
+
         OldTrip trip = tripList.get(position);
         holder.textViewName.setText(trip.getName());
         holder.textViewRealName.setText(trip.getRealName());
         holder.textViewSource.setText(trip.getSource());
         holder.textViewDestination.setText(trip.getDestination());
         holder.textViewCost.setText(trip.getCost());
-        holder.editTextdate.setText(trip.getDate());
+        holder.editTextdate.setText(formatter.format(trip.getdate()));
         holder.textViewRideDuration.setText(trip.getRideDuration());
 
 
@@ -101,5 +109,6 @@ public class PastTripsAdapter extends RecyclerView.Adapter<PastTripsAdapter.Hero
             linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
         }
     }
+
 }
 
