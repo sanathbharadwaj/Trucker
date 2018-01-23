@@ -32,8 +32,10 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-       mToolbar = (Toolbar)findViewById(R.id.nav_action_bar);
-       setSupportActionBar(mToolbar);
+        mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Button ed = (Button) findViewById(R.id.edit_prof);
 

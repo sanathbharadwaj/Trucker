@@ -30,8 +30,9 @@
             android:layout_height="28dp"
             android:layout_marginTop="8dp"
             android:text="  8792111296"
+            android:textAlignment="center"
             android:textColor="#4863A0"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -62,8 +63,9 @@
             android:layout_marginTop="8dp"
             android:onClick="email"
             android:text="ssmelmuri@gmail.com"
+            android:textAlignment="center"
             android:textColor="#4863A0"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -89,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Call Us at"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/contact_tool" />
@@ -111,6 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="E-mail Us at"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/or" />

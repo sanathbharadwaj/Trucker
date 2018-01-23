@@ -1,5 +1,6 @@
 package com.harsha.trucker;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -62,6 +64,13 @@ public class PastTripsActivity extends AppCompatActivity{
 
         loadData();
 
+        mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+
 
 
 
@@ -70,7 +79,8 @@ public class PastTripsActivity extends AppCompatActivity{
 
     private void loadData(){
 
-        final ParseQuery<ParseObject>query = ParseQuery.getQuery("Request");
+        //final ParseQuery query = ParseQuery.getQuery("Request");
+        final ParseQuery query = new ParseQuery("Request");
         query.whereEqualTo("username",ParseUser.getCurrentUser().getUsername());
         //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -91,7 +101,7 @@ public class PastTripsActivity extends AppCompatActivity{
 
                         OldTrip old =new OldTrip(
                                 // OldTrip oldTrip = new OldTrip();
-                                object.getString("source"),
+                                object.getString("status"),
                                 object.getString("username"),
                                 object.getString("source"),
                                 object.getString("destination"),
@@ -119,7 +129,6 @@ public class PastTripsActivity extends AppCompatActivity{
 
             }
         });
-
     }
     void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

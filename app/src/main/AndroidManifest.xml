@@ -55,18 +55,11 @@
             android:name=".MapsActivity"
             android:label="Trucker"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".BookingActivity"
-            android:label="Booking Details"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".TrackTripActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".RegistrationActivity"
-            android:label="Registration"
-            android:screenOrientation="portrait" />
+
+           <!-- android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"-->
+
+            //android:screenOrientation="portrait"
         <activity
             android:name=".CancelRideActivity"
             android:screenOrientation="portrait" />
@@ -96,6 +89,17 @@
         <meta-data
             android:name="com.parse.push.gcm_sender_id"
             android:value="id:492871431831" />
+
+        <activity
+            android:name=".TrackTripActivity"
+            android:label="Track Trip" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:label="Registration"/>
+
+        <activity
+            android:name=".BookingActivity"
+            android:label="Booking Details"/>
 
         <activity
             android:name=".RideEndActivity"
@@ -131,7 +135,8 @@
         <activity
             android:name=".ContactUsActivity"
             android:label="Contact Us" />
-        <activity android:name=".SupportActivity" />
+        <activity android:name=".SupportActivity"
+            android:label="Support"/>
         <activity android:name=".EditProfileActivity"></activity>
     </application>
 

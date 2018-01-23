@@ -28,6 +28,7 @@
         android:layout_height="153dp"
         android:backgroundTint="#0000ff"
         android:elevation="@dimen/cardview_default_elevation"
+        android:visibility="visible"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="1.0"
@@ -41,7 +42,7 @@
         android:layout_marginBottom="118dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/shape"
-        android:backgroundTint="#00ff00"
+        android:backgroundTint="@android:color/holo_green_dark"
         android:elevation="8dp"
         android:visibility="invisible"
         map:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +52,6 @@
         map:srcCompat="@drawable/ic_phone_black_18dp" />
 
 
-
     <Button
         android:id="@+id/ride_cancel"
         android:layout_width="0dp"
@@ -59,12 +59,12 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="#0000FF"
+        android:background="@color/colorPrimary"
         android:elevation="4dp"
         android:onClick="cancelRide"
         android:text="CANCEL RIDE"
-        android:textColor="#FFFFFF"
-        android:visibility="invisible"
+        android:textColor="@android:color/black"
+        android:visibility="visible"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent" />
@@ -77,11 +77,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:elevation="4dp"
-        android:src="@drawable/suhas_img"
         android:visibility="invisible"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toStartOf="@+id/vehicle_name"
-        map:layout_constraintStart_toStartOf="parent" />
+        map:layout_constraintStart_toStartOf="parent"
+        map:srcCompat="@drawable/ic_account_box_black_24dp" />
 
     <TextView
         android:id="@+id/driver_name"
@@ -92,6 +92,7 @@
         android:elevation="4dp"
         android:text="Suhas"
         android:textColor="#000000"
+        android:textSize="18sp"
         android:visibility="invisible"
         map:layout_constraintStart_toEndOf="@+id/driver_img"
         map:layout_constraintTop_toTopOf="@+id/imageView" />
@@ -114,12 +115,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
         android:elevation="4dp"
         android:text="KA 12 F 0810"
         android:visibility="invisible"
         map:layout_constraintStart_toEndOf="@+id/driver_img"
-        map:layout_constraintTop_toBottomOf="@+id/driver_name" />
+        map:layout_constraintTop_toBottomOf="@+id/vehicle_name" />
 
     <TextView
         android:id="@+id/driver_search"
@@ -141,8 +141,6 @@
         map:layout_constraintTop_toBottomOf="@+id/status_text" />
 
 
-
-
     <TextView
         android:id="@+id/status_text"
         android:layout_width="wrap_content"
@@ -150,7 +148,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Ride In Progress"
         map:layout_constraintBottom_toTopOf="@+id/imageView"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent" />
@@ -162,9 +159,12 @@
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:visibility="visible"
-        map:layout_constraintEnd_toEndOf="@+id/imageView"
-        map:layout_constraintHorizontal_bias="0.369"
+        android:layout_marginTop="8dp"
+        android:elevation="4dp"
+        android:indeterminate="true"
+        android:indeterminateTint="#000000"
+        android:visibility="invisible"
+        map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toBottomOf="@+id/driver_search" />
 

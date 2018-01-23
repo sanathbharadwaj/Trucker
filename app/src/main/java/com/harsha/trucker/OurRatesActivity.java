@@ -8,7 +8,13 @@ import android.view.View;
 
 public class OurRatesActivity extends AppCompatActivity {
 
+    Toolbar mToolbar;
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
 
     @Override
@@ -16,12 +22,10 @@ public class OurRatesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_our_rates);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.nav_action_bar);
-        setSupportActionBar(toolbar);
-        if (toolbar!=null){
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-        }
-
+        mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
     }

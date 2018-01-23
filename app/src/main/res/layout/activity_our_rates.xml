@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+
     <ImageView
         android:id="@+id/rate_truck_icon"
         android:layout_width="wrap_content"

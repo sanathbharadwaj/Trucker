@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +70,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     private String requestId;
     public static Status status = Status.ACCEPTED;
     private Marker userMarker;
+    private ProgressBar imgLoad;
     private PolylineOptions polylineOptions;
     List<LatLng> driverLocations = new ArrayList<LatLng>();
     private Polyline polyline;
@@ -132,9 +134,11 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
 
     void updateRideStatus(ParseObject mRequest)
     {
+
         switch (mRequest.getString("status"))
         {
-            case "accepted": searchDriver(); status = Status.ACCEPTED;break;
+            case "accepted":searchDriver(); status = Status.ACCEPTED;
+                            break;
             case "assigned": searchDriver();break;
             case "arrived": searchDriver(); driverArrived();break;
             case "started": searchDriver(); rideStarted();break;
@@ -320,6 +324,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
 
     void searchDriver()
     {
+        imgLoad = (ProgressBar)findViewById(R.id.loader);
         driverLoading = false;
         Intent intent = getIntent();
         requestId = intent.getStringExtra("requestId");
@@ -335,6 +340,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void run() {
                 if(!driverLoading) {
+                    imgLoad.setVisibility(View.VISIBLE);
                     driverLoading = true;
                     ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Request");
                     query.getInBackground(requestId, new GetCallback<ParseObject>() {
@@ -345,6 +351,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
                                 getDriverDetails(object);
                                 status = Status.ASSIGNED;
                                 assigned = true;
+                                imgLoad.setVisibility(View.GONE);
                             }
                             driverLoading = false;
                         }

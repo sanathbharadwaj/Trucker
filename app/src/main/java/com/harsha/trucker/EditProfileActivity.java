@@ -18,6 +18,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.SignUpCallback;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class EditProfileActivity extends AppCompatActivity {
     void updateUserUI() {
         getTextView(R.id.name_ed).setText(ParseUser.getCurrentUser().getString("name"));
         getTextView(R.id.phone_no).setText(ParseUser.getCurrentUser().getString("phone"));
-        getTextView(R.id.email_add_ed).setText(ParseUser.getCurrentUser().getString("email"));
+        getTextView(R.id.email_add_ed).setText(ParseUser.getCurrentUser().getEmail());
 
     }
     TextView getTextView(int id)
@@ -78,8 +79,9 @@ public class EditProfileActivity extends AppCompatActivity {
         loadToActivity();*/
         ParseUser use = ParseUser.getCurrentUser();
         use.put("name",getTextView(R.id.name_ed).getText().toString());
-        use.put("email",getTextView(R.id.email_add_ed).getText().toString());
-        use.saveInBackground(new SaveCallback() {
+        //use.put("email",getTextView(R.id.email_add_ed).getText().toString());
+        use.setEmail(getTextView(R.id.email_add_ed).getText().toString());
+        use.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
                 if (e!=null) {

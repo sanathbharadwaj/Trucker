@@ -8,13 +8,13 @@ import java.util.Date;
 
 public class OldTrip {
 
-    private String name, realName, source, destination, cost, rideDuration;
+    private String status, realName, source, destination, cost, rideDuration;
     private Date date;
 
 
 
-    public OldTrip(String name, String realName, String source, String destination, String cost, Date date, String rideDuration) {
-        this.name = name;
+    public OldTrip(String status, String realName, String source, String destination, String cost, Date date, String rideDuration) {
+        this.status = status;
         this.realName = realName;
         this.source = source;
         this.destination = destination;
@@ -23,8 +23,14 @@ public class OldTrip {
         this.rideDuration = rideDuration;
     }
 
-    public String getName() {
-        return name;
+    public String getStatus() {
+        if(status.equals("finished")){
+            return status;
+        }else {
+            status="cancelled";
+            return status;
+        }
+
     }
 
     public String getRealName() {

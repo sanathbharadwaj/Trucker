@@ -48,7 +48,12 @@ public class PastTripsAdapter extends RecyclerView.Adapter<PastTripsAdapter.Hero
     public void onBindViewHolder(final HeroViewHolder holder, final int position) {
 
         OldTrip trip = tripList.get(position);
-        holder.textViewName.setText(trip.getName());
+        if (trip.getStatus()=="cancelled"){
+            holder.textViewName.setBackgroundResource(R.color.red);
+        }else {
+            holder.textViewName.setBackgroundResource(R.color.darkgreen);
+        }
+        holder.textViewName.setText(trip.getStatus());
         holder.textViewRealName.setText(trip.getRealName());
         holder.textViewSource.setText(trip.getSource());
         holder.textViewDestination.setText(trip.getDestination());

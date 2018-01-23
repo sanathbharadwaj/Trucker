@@ -80,10 +80,10 @@ public class BookingActivity extends AppCompatActivity {
 
 
 
-        /*mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
+        mToolbar = (Toolbar) findViewById(R.id.nav_action_bar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
 
