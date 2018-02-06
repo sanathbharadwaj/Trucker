@@ -60,7 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(e!=null)
                 {
                     //TODO: Handling failures
-                    showToast("Registration error");
+                    showToast(e.getMessage());
                     return;
                 }
                 showToast("Registration successful");

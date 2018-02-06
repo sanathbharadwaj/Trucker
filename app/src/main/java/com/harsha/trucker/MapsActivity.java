@@ -12,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -52,6 +53,7 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.harsha.trucker.BuildConfig;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -92,9 +94,52 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.main_screen);
         initializeNavigationDrawer();
         checkForCurrentTrip();
-        installation();
+        //installation();
         init();
+        checkForNewVersion();
 
+    }
+
+    private void checkForNewVersion() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Update");
+        query.setLimit(1);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e!=null || objects.size() == 0) return;
+                if(objects.get(0).getInt("version") > BuildConfig.VERSION_CODE)
+                {
+                    showAppUpdateAlert();
+                }
+            }
+        });
+    }
+
+    private void showAppUpdateAlert() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("New Version Available")
+                .setMessage("Please update to the new version in order to continue using Trucker")
+                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //TODO: Add app url
+                        String url = "https://www.google.com";
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void installation() {
@@ -112,7 +157,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     void checkForCurrentTrip() {
-        SharedPreferences prefs = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.package_name), MODE_PRIVATE);
         if (prefs.getBoolean("isRunning", false)) {
             loadActivityAndFinish(this, TrackTripActivity.class);
         } else

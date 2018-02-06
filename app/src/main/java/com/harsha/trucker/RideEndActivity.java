@@ -8,18 +8,21 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FunctionCallback;
 import com.parse.GetCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import static com.harsha.trucker.Utilities.*;
 
-import static com.harsha.trucker.Utilities.loadActivityAndFinish;
+import java.util.HashMap;
 
 public class RideEndActivity extends AppCompatActivity {
 
     private TextView totalCash;
+    private ParseObject request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class RideEndActivity extends AppCompatActivity {
 
     void setCash()
     {
-        ParseQuery query = new ParseQuery("Request");
+        ParseQuery<ParseObject> query = new ParseQuery<>("Request");
         Intent intent = getIntent();
         String objectId = intent.getStringExtra("id");
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
@@ -54,7 +57,7 @@ public class RideEndActivity extends AppCompatActivity {
     public void done(View view)
     {
         final RatingBar rateDriver = (RatingBar)findViewById(R.id.rate_driver_star);
-        ParseQuery query = new ParseQuery("Request");
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Request");
         Intent intent = getIntent();
         String objectId = intent.getStringExtra("id");
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
@@ -65,7 +68,8 @@ public class RideEndActivity extends AppCompatActivity {
                     showToast("Error Submitting");
                     return;
                 }
-                object.put("rate",rateDriver.getRating());
+                request = object;
+                object.put("rating",rateDriver.getRating());
                 object.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -76,16 +80,26 @@ public class RideEndActivity extends AppCompatActivity {
                         }else{
                             showToast("Submitted Successfully");
                             //loadActivityAndFinish(context, MapsActivity.class);
-                            finish();
-
+                            updateAverageRating(rateDriver.getRating());
                         }
                     }
                 });
             }
         });
-        Intent intent1 = new Intent(this, MapsActivity.class);
-        startActivity(intent1);
-        finish();
+    }
+
+    void updateAverageRating(float rating)
+    {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("rating", Float.toString(rating));
+        params.put("driverId", request.getString("driverId"));
+        ParseCloud.callFunctionInBackground("updateAverageRating", params, new FunctionCallback<Integer>() {
+            @Override
+            public void done(Integer object, ParseException e) {
+                if(e!=null || object.equals(0)){ showToast("Network error occured, please try again"); return;}
+                loadActivityAndFinish(RideEndActivity.this, MapsActivity.class);
+            }
+        });
     }
 
 

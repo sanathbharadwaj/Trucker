@@ -25,7 +25,8 @@
         map:layout_constraintLeft_toLeftOf="parent"
         map:layout_constraintTop_toTopOf="parent"
         map:layout_constraintVertical_bias="0.0"
-        tools:context="trucker.harsha.com.trucker.com.harsha.trucker.MapsActivity" />
+        tools:context="trucker.harsha.com.trucker.com.harsha.trucker.MapsActivity"
+        map:uiZoomGestures="false"/>
 
     <TextView
         android:id="@+id/pick_up_edittext"

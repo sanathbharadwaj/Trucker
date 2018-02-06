@@ -1,6 +1,7 @@
 package com.harsha.trucker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,15 +9,18 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.parse.FunctionCallback;
 import com.parse.GetCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-import com.harsha.trucker.R;
+import java.util.HashMap;
 
 public class CancelRideActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +45,10 @@ public class CancelRideActivity extends AppCompatActivity {
         object.put("requestId", requestId);
         object.saveInBackground();
 
-        ParseQuery query = new ParseQuery("Request");
+        ParseQuery<ParseObject> query = new ParseQuery<>("Request");
         query.getInBackground(requestId, new GetCallback<ParseObject>() {
             @Override
-            public void done(ParseObject object, ParseException e) {
+            public void done(final ParseObject object, ParseException e) {
                 object.put("status", "cancelled");
                 object.saveInBackground(new SaveCallback() {
                     @Override
@@ -53,9 +57,26 @@ public class CancelRideActivity extends AppCompatActivity {
                             showToast("Error canceling ride!!");
                             return;
                         }
+                        saveRunningStatus();
+                        notifyRideCancelled(object.getString("driverId"));
                         loadMapsActivity();
                     }
                 });
+            }
+        });
+    }
+
+    void notifyRideCancelled(final String driverId)
+    {
+        if(driverId == null || driverId.equals(""))
+            return;
+        HashMap<String, String> params = new HashMap<>();
+        params.put("driverId", driverId);
+        ParseCloud.callFunctionInBackground("notifyRideCancelled", params, new FunctionCallback<Integer>() {
+            public void done(Integer res, ParseException e)
+            {
+                if(e!=null)
+                    notifyRideCancelled(driverId);
             }
         });
     }
@@ -69,5 +90,13 @@ public class CancelRideActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
+    }
+
+    void saveRunningStatus()
+    {
+        //SharedPreferences preferences = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE);
+        SharedPreferences.Editor editor = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE).edit();
+        editor.putBoolean("isRunning", false);
+        editor.apply();
     }
 }

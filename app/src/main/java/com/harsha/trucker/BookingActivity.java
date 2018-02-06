@@ -135,7 +135,7 @@ public class BookingActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if(e==null)
                 {
-                    callCloud();
+                    //callCloud();
                     imgLoad.setVisibility(View.VISIBLE);
                     imgBack1.setVisibility(View.VISIBLE);
                     notifyDrivers();

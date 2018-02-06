@@ -25,6 +25,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -111,8 +112,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         editor = getSharedPreferences("com.harsha.trucker", MODE_PRIVATE).edit();
         boolean isRunning = prefs.getBoolean("isRunning", false);
         if(!isRunning) {
-            editor.putBoolean("isRunning", true);
-            editor.apply();
+           saveRunningStatus(true);
             searchDriver();
             return;
         }
@@ -121,16 +121,29 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         if(idFromLocal ==null)
         {
             showToast("Error loading current trip");
+            saveRunningStatus(false);
             finish();
         }
         query.getInBackground(idFromLocal, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
+                if(e!=null || object == null){
+                    saveRunningStatus(false);
+                    finish();
+                    return;
+                }
                 request = object;
                 updateRideStatus(object);
             }
         });
     }
+
+    void saveRunningStatus(boolean status)
+    {
+        editor.putBoolean("isRunning", status);
+        editor.commit();
+    }
+
 
     void updateRideStatus(ParseObject mRequest)
     {
@@ -139,7 +152,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
         {
             case "accepted":searchDriver(); status = Status.ACCEPTED;
                             break;
-            case "assigned": searchDriver();break;
+            case "assigned": searchDriver(); status = Status.ASSIGNED;break;
             case "arrived": searchDriver(); driverArrived();break;
             case "started": searchDriver(); rideStarted();break;
             case "finished": rideFinished();break;
@@ -173,6 +186,8 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
 
     void driverArrived()
     {
+        Button button = findViewById(R.id.ride_cancel);
+        button.setEnabled(false);
         getTextView(R.id.status_text).setText("Driver arrived at your location");
         status = Status.ARRIVED;
     }
@@ -188,8 +203,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     void rideFinished()
     {
         status = Status.FINISHED;
-        editor.putBoolean("isRunning", false);
-        editor.apply();
+        saveRunningStatus(false);
         Intent intent = new Intent(this, RideEndActivity.class);
         intent.putExtra("id", request.getObjectId());
         startActivity(intent);
@@ -200,8 +214,7 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
     {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
-        editor.putBoolean("isRunning", false);
-        editor.commit();
+        saveRunningStatus(false);
         finish();
     }
 
@@ -349,10 +362,11 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
                             request = object;
                             if (!object.getString("status").equals("accepted")) {
                                 getDriverDetails(object);
-                                status = Status.ASSIGNED;
                                 assigned = true;
-                                imgLoad.setVisibility(View.GONE);
                             }
+                            if(object.getString("status").equals("assigned"))
+                                status = Status.ASSIGNED;
+                            imgLoad.setVisibility(View.GONE);
                             driverLoading = false;
                         }
 
@@ -522,6 +536,13 @@ public class TrackTripActivity extends AppCompatActivity implements OnMapReadyCa
 
     public void cancelRide(View view)
     {
+        if(request != null) {
+            String status = request.getString("status");
+            if (!status.equals("accepted") && !status.equals("assigned")) {
+                showToast("Ride cannot be cancelled now");
+                return;
+            }
+        }
         Intent intent = new Intent(this, CancelRideActivity.class);
         intent.putExtra("requestId", requestId);
         startActivity(intent);

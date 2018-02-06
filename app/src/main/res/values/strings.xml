@@ -20,6 +20,7 @@
     </string-array>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="package_name">com.harsha.trucker</string>
     <string name="aboutusContent">
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."
         "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
@@ -31,8 +32,5 @@
         "The fundamentals of light, surface, and movement are key to conveying how objects move, "
         "interact, and exist in space and in relation to each other. Realistic lighting shows "
         "seams, divides space, and indicates moving parts.\n\n"
-
-
-
     </string>
 </resources>
